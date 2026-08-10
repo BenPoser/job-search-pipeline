@@ -1,0 +1,128 @@
+# Profile template
+#
+# This is the shape of my/profile.yaml. /setup writes the real one; this file documents the
+# schema and is never read at runtime.
+#
+# Nothing here is software-specific. The taxonomy at the bottom is generated per user from
+# their own CV and interview (see docs/adr/0003).
+
+personal:
+  name: Full Name
+  email: name@example.com
+  phone: null                      # optional
+  location: City, Country
+  links:
+    - label: LinkedIn
+      url: https://www.linkedin.com/in/example
+  # Right to work / visa notes, if relevant to applications. Never rendered on a CV
+  # unless the user asks for it.
+  notes: null
+
+preferences:
+  page_target: 2                   # 2 = UK industry, 1 = US resume, 6+ = academic
+  cv_template: classic             # see templates/cv/
+  salary_expectation: null
+  notice_period: null
+
+# ---------------------------------------------------------------------------
+# Roles: every position held. Employment, study, volunteering, freelance.
+# ---------------------------------------------------------------------------
+
+roles:
+  - id: role-001                   # stable identifier, referenced by achievements
+    title: Job Title
+    organisation: Organisation Name
+    # What the organisation does, in plain words. Used when the employer is not
+    # well known, so a reader can judge the scale of what follows.
+    organisation_context: Regional charity, roughly 40 staff
+    start: 2021-03                 # YYYY-MM
+    end: 2024-08                   # YYYY-MM, or null if current
+    location: City, Country
+    employment_type: permanent     # permanent | contract | freelance | volunteer | study
+
+    achievements:
+      - id: ach-001
+        # What they did. A verb phrase, not a finished CV bullet.
+        action: Redesigned the referral intake process
+        # What changed as a result.
+        result: Cut the time from referral to first contact
+        # The quantified measure, where one genuinely exists. Never estimated.
+        metric: 11 days to 3 days
+        # The situation, scale or constraint that makes it meaningful.
+        context: >
+          Backlog of ~200 open referrals, three part-time caseworkers, no budget
+          for new software.
+        # What this demonstrates they can do. Field-neutral.
+        capabilities:
+          - process redesign
+          - stakeholder negotiation
+        # Terms from this person's own taxonomy (see bottom of file).
+        tags:
+          - service-delivery
+          - operations
+        # Where this came from. Load-bearing, not metadata: nothing reaches a
+        # generated document without it. See docs/adr and CONTEXT.md.
+        provenance:
+          source: interview        # cv | linkedin | interview | manual
+          date: 2026-08-10
+          detail: >
+            Setup interview. User described the intake redesign in response to a
+            question about the "improved referral handling" line on their CV.
+          # The user's own words, where they said something worth preserving
+          # verbatim. Useful for voice, and for settling later disputes about
+          # what was actually claimed.
+          quote: >
+            We were sitting on about two hundred referrals and nobody could tell
+            you where any of them were.
+        # Set when the claim check in /apply has questioned this and the user
+        # has confirmed the wording. Prevents re-asking the same question.
+        confirmed_wording: null
+
+  - id: role-002
+    title: Previous Job Title
+    organisation: Previous Organisation
+    organisation_context: null
+    start: 2018-09
+    end: 2021-02
+    location: City, Country
+    employment_type: permanent
+    achievements: []
+
+# ---------------------------------------------------------------------------
+# Education, qualifications, registrations, memberships.
+# ---------------------------------------------------------------------------
+
+education:
+  - qualification: BA Something
+    institution: University Name
+    year: 2018
+    detail: null
+
+# ---------------------------------------------------------------------------
+# Taxonomy: generated for this person during setup from their own history.
+# Two people in different fields share no terms here. See docs/adr/0003.
+# ---------------------------------------------------------------------------
+
+taxonomy:
+  # Areas of work this person operates in.
+  domains:
+    - service-delivery
+    - operations
+    - safeguarding
+  # Recurring capabilities across their career.
+  capabilities:
+    - process redesign
+    - stakeholder negotiation
+    - team leadership
+  # Career stage, so a CV can weight recent work correctly.
+  stages:
+    - early-career
+    - mid-career
+    - senior
+
+# ---------------------------------------------------------------------------
+# Narratives: NOT created at setup. Generated later by /update-profile once the
+# profile is large enough to need a retrieval layer. See docs/adr/0003.
+# ---------------------------------------------------------------------------
+
+narratives: []

@@ -1,0 +1,29 @@
+# Everything personal to the user lives in my/ and is excluded by default.
+#
+# Setup offers the alternative: commit my/ to a PRIVATE repository, which gives you a
+# backup and a history of how your profile has grown. If you chose that, delete the
+# my/ line below.
+#
+# Never commit my/ to a public repository.
+
+# Note: my/* rather than my/ so that .gitkeep can be re-included below. Git cannot
+# re-include a file whose parent directory is itself excluded.
+my/*
+!my/.gitkeep
+
+# Credentials
+.claude/settings.local.json
+.env
+
+# Generated output
+*.pdf
+*.docx
+!templates/**/*.docx
+
+# OS and editor noise
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+.idea/
+.vscode/

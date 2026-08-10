@@ -1,0 +1,80 @@
+# Search configuration template
+#
+# This is the shape of my/search-config.yaml. /setup writes the real one, built mainly from
+# two or three real job adverts the user pastes in rather than from keywords they invent.
+
+location:
+  country: gb                      # ISO code. Validated against Adzuna's supported list at
+                                   # setup. Unsupported country means manual-only mode, and
+                                   # setup says so plainly rather than returning nothing.
+  city: London                     # null for country-wide
+  max_commute_miles: 25            # null if not relevant
+
+remote: preferred                  # required | preferred | hybrid | onsite | any
+
+salary:
+  minimum: null                    # below this, do not surface at all
+  target: null
+  currency: GBP
+
+employment_types:
+  - permanent
+  # - contract
+  # - part-time
+
+# ---------------------------------------------------------------------------
+# Search clusters. Each maps to a Fit Type of the same name, defined relative
+# to this person's own profile (see CONTEXT.md).
+# ---------------------------------------------------------------------------
+
+clusters:
+  core:                            # the job they already do
+    active: true
+    titles:
+      - Example Title
+      - Example Alternative Title
+    keywords: []
+    # The adverts this cluster was derived from. Kept so the cluster can be
+    # rebuilt or explained later.
+    derived_from:
+      - "https://example.com/job/12345"
+
+  adjacent:                        # a step up, or a sideways move
+    active: true
+    titles: []
+    keywords: []
+    derived_from: []
+
+  pivot:                           # a change of field
+    active: false
+    titles: []
+    keywords: []
+    derived_from: []
+
+# ---------------------------------------------------------------------------
+# Filtering
+# ---------------------------------------------------------------------------
+
+minimum_score: 5                   # below this, a found job is not written to my/jobs/
+max_results_per_search: 25
+
+# Terms that reliably indicate a role is not relevant. Built up over time as the
+# user dismisses jobs. Broad keyword searches pull in adjacent industries that
+# share vocabulary.
+exclude_terms: []
+
+# ---------------------------------------------------------------------------
+# Sources
+# ---------------------------------------------------------------------------
+
+sources:
+  manual: true                     # always available, never requires a key
+  adzuna: false                    # requires ADZUNA_APP_ID and ADZUNA_APP_KEY
+  reed: false                      # requires REED_API_KEY. United Kingdom only.
+
+# Boards the user already uses that this tool cannot search. Recorded so
+# /find-jobs can remind them to check and paste anything worth having, turning a
+# gap into a visible step rather than a silent hole.
+manual_boards: []
+  # - name: CharityJob
+  #   url: https://www.charityjob.co.uk
