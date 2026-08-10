@@ -1,3 +1,8 @@
+---
+name: update-profile
+description: Add new experience, deepen an existing achievement, or generate narratives once the profile is large enough. Use when the user runs /update-profile or mentions experience not yet recorded.
+---
+
 # /update-profile
 
 Add experience, go deeper on something already recorded, and generate narratives once the

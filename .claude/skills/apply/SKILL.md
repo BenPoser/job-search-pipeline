@@ -1,3 +1,8 @@
+---
+name: apply
+description: Produce a tailored CV, cover letter and application answers for one specific job, including the non-skippable claim check. Use when the user runs /apply or is ready to apply for a shortlisted role.
+---
+
 # /apply
 
 Produce the application pack for one specific job: tailored CV in both formats, cover letter,

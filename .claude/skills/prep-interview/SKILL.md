@@ -1,3 +1,8 @@
+---
+name: prep-interview
+description: Prepare for a specific interview: audit the claims most likely to be probed, run a mock interview, and produce a cheat sheet. Use when the user runs /prep-interview or has an interview coming up.
+---
+
 # /prep-interview
 
 Prepare for a specific interview.

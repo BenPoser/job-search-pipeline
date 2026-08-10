@@ -1,3 +1,8 @@
+---
+name: find-jobs
+description: Find job opportunities and score them against the user's profile, either by searching configured job boards or from a link or advert the user pastes in. Use when the user runs /find-jobs or wants to add a job they found themselves.
+---
+
 # /find-jobs
 
 Find roles and score them against the profile. Two equally supported ways in: paste one, or

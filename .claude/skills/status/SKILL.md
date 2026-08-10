@@ -1,3 +1,8 @@
+---
+name: status
+description: Report the state of the job search and recommend a single next step. Use when the user runs /status, asks what to do next, or seems unsure where they are in the process.
+---
+
 # /status
 
 Report the state of the search and say what to do next.

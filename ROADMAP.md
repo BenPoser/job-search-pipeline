@@ -10,7 +10,8 @@ written. No command is implemented.
 The bar is a real user, in a field that is not software, getting from nothing to a sent
 application without the author sitting next to them.
 
-- [ ] `/setup` — the whole thing, resumable. The largest single piece of work.
+- [x] `/setup` — written, including the interview guide and the API key walkthrough.
+      Untested against a real person.
 - [ ] `/find-jobs` — manual paste first, then Adzuna, then Reed
 - [ ] `/review-jobs`
 - [ ] `/apply` — including the claim check, both output formats, and the `generated/` snapshot

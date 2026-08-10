@@ -30,11 +30,17 @@ Everything is either shipped machinery or user data, split by directory, with no
 (`docs/adr/0002`).
 
 ```
-.claude/skills/   the eight commands
-docs/             shipped documentation and decisions
-templates/        the shapes of user files, never read at runtime
-my/               100% user data, gitignored by default, never touched by an update
+.claude/skills/<command>/SKILL.md   the eight commands, plus reference files alongside
+docs/                               shipped documentation and decisions
+templates/                          shapes of user files, never read at runtime
+my/                                 100% user data, gitignored, never touched by an update
 ```
+
+Each command is a directory containing `SKILL.md` with `name` and `description` frontmatter.
+That layout is what makes `/setup` work as a typed command; a flat `setup.md` does not register
+and only works if someone tells Claude to go and read it. Long commands keep their detail in
+sibling reference files that `SKILL.md` points to, so the main file stays readable and the
+detail loads only when needed.
 
 **Never put anything personal outside `my/`. Never put machinery inside it.** This is what makes
 `git pull` safe for a user with a live profile.
@@ -61,4 +67,8 @@ sentence aimed at a user.
 
 ## Current state
 
-Scaffolded, nothing built. See `ROADMAP.md` for the phase split and what to build first.
+`/setup` is written and untested. Everything else is a specification only, marked as such at the
+top of its `SKILL.md`. See `ROADMAP.md`.
+
+Nothing here has been run against a real person yet, so treat the setup design as a hypothesis
+about how someone talks about their own career, not as settled.

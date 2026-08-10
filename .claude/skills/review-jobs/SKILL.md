@@ -1,3 +1,8 @@
+---
+name: review-jobs
+description: Triage found jobs one at a time and record apply, dismiss or hold decisions. Use when the user runs /review-jobs or wants to work through what a search turned up.
+---
+
 # /review-jobs
 
 Walk the user through jobs that have been found, one at a time, and record what they decided.

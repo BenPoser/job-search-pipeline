@@ -1,3 +1,8 @@
+---
+name: log-outcome
+description: Record what happened after an application and update the learnings file. Use when the user runs /log-outcome or reports a rejection, interview invitation or offer.
+---
+
 # /log-outcome
 
 Record what happened after applying, and write what can honestly be learned from it.

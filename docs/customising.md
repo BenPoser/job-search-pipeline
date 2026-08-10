@@ -30,7 +30,7 @@ Everything is plain Markdown or YAML. Nothing is compiled, hidden, or magic.
 | `docs/quality-rules.md` | The craft standards applied to every document. |
 | `docs/tone.md` | How the commands talk to you. |
 | `templates/cv/` | What your CV looks like. |
-| `.claude/skills/*.md` | The commands themselves, in full. |
+| `.claude/skills/<command>/SKILL.md` | The commands themselves, in full. |
 
 ---
 
@@ -71,7 +71,7 @@ Two options:
 2. **Ask Claude to add the board.** If it has a public API, say so and Claude can add it to
    `/find-jobs`. Each source needs an endpoint, an authentication method, a mapping from its
    fields to ours, and a paging rule. Look at how Adzuna and Reed are described in
-   `.claude/skills/find-jobs.md` for the shape of it.
+   `.claude/skills/find-jobs/SKILL.md` for the shape of it.
 
 ---
 
