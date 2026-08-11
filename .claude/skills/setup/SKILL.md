@@ -17,8 +17,24 @@ user wants job board keys in phase 6.
 **Check for an existing setup.** Read `my/setup-state.yaml`.
 
 - **Missing** → this is a fresh run. Start at phase 0.
-- **Present and incomplete** → resume. Summarise what is done in one or two lines, say what is
-  next and roughly how long, and ask if they want to carry on. Do not repeat completed phases.
+- **Present and incomplete** → resume. **Print the step list first** (see below), which shows
+  them where they are far better than a sentence can, then say what is next and roughly how
+  long, and ask if they want to carry on. Do not repeat completed phases.
+
+  > Picking up where you left off.
+  >
+  > ```
+  >   ✓  Your CV and documents
+  >   ▶  The interview                    3 of your 5 roles done
+  >      Themes from your career
+  >      How you write
+  >      What you're looking for
+  >      Job board accounts (optional)
+  >      Backing up your profile
+  > ```
+  >
+  > Next is your 2021 to 2023 role. About 20 minutes to finish the interview. Carry on?
+
 - **Present and complete** → do not rerun. Say setup is done, ask what they actually want, and
   point them at `/update-profile` for adding experience or `/status` for what to do next.
 
@@ -48,15 +64,31 @@ notes:
 Someone in a field where CV bullets are not the norm should not be walked through questions
 built for one where they are.
 
-**Always show where they are.** This is a long process and it feels longer when you cannot see
-the end of it. Open every phase with a one-line marker, and close every phase with what is left:
+**Always show where they are, by name.** This is a long process and it feels longer when you
+cannot see the end of it. A step number alone does not help; people want to know what the steps
+*are*.
+
+**Print the step list at the start of every phase**, with everything done ticked, the current
+one marked, and the rest visible:
 
 ```
-Step 3 of 7 — Themes. About 5 minutes.
+  ✓  Your CV and documents
+  ✓  The interview
+  ▶  Themes from your career          step 3 of 7 · about 5 min
+     How you write
+     What you're looking for
+     Job board accounts (optional)
+     Backing up your profile
 ```
+
+Use exactly these seven names everywhere they appear, including in phase 0 and on resume, so
+that the list is recognisably the same object each time. Do not reword them, and do not renumber
+mid-run.
 
 The user-facing numbering runs 1 to 7 and maps to phases 1 to 7. Phase 0 and phase 8 are
 orientation and wrap-up; do not number them, they are not work.
+
+Close each phase with what remains, in a line:
 
 > Done. Five roles, nineteen achievements. Three short steps left, about fifteen minutes.
 
@@ -86,16 +118,19 @@ have one ready.
 > left off.
 >
 > ```
-> 1. Your CV and anything else you have      5 min
-> 2. The interview, one role at a time      30-45 min   ← the long one
-> 3. Themes from your career                 5 min
-> 4. How you write                           5 min
-> 5. What you're looking for                10 min
-> 6. Job board accounts (optional)          10 min
-> 7. Backing up your profile                 2 min
+>  1. Your CV and documents             5 min
+>  2. The interview                  30-45 min   ← the long one
+>  3. Themes from your career           5 min
+>  4. How you write                     5 min
+>  5. What you're looking for          10 min
+>  6. Job board accounts (optional)    10 min
+>  7. Backing up your profile           2 min
 > ```
 >
 > Step 2 is most of it. The rest is quick.
+
+This is the same seven-item list that reappears, ticked off, at the start of every phase. Keep
+the wording identical throughout.
 
 Say plainly that nothing here is one-shot: the profile is designed to grow, and anything they
 forget can be added later.
@@ -110,7 +145,7 @@ different questions from someone going for the next rung.
 
 Write `my/setup-state.yaml`.
 
-## Phase 1 — Documents  ·  announce as "Step 1 of 7, about 5 minutes"
+## Phase 1 — Documents  ·  open with the step list · step 1 of 7 · ~5 min
 
 Ask for their current CV. They can drag it into the chat or drop it in `my/inbox/`. PDF or DOCX
 both fine. Read it.
@@ -135,7 +170,7 @@ Then tell them what you have, honestly:
 > That gives me five roles going back to 2014, and about twelve things you did. Most are
 > one-line claims with no detail, which is what a CV is. That's what the next part is for.
 
-## Phase 2 — The interview  ·  announce as "Step 2 of 7, 30 to 45 minutes"
+## Phase 2 — The interview  ·  open with the step list · step 2 of 7 · 30-45 min
 
 **Read [INTERVIEW.md](INTERVIEW.md) now.** It has the technique, the question bank, and how to
 handle overstatement.
@@ -145,7 +180,7 @@ most recent first, because recent work matters most and energy fades.
 
 Save state after each role, noting which are done.
 
-## Phase 3 — Taxonomy  ·  announce as "Step 3 of 7, about 5 minutes"
+## Phase 3 — Taxonomy  ·  open with the step list · step 3 of 7 · ~5 min
 
 Generate this person's taxonomy from the profile you now have: domains, capabilities, and career
 stages, in their own field's language.
@@ -162,7 +197,7 @@ Show it to them in plain language, not as YAML:
 
 Two or three corrections here improve every later selection. Write it into `my/profile.yaml`.
 
-## Phase 4 — Voice  ·  announce as "Step 4 of 7, about 5 minutes"
+## Phase 4 — Voice  ·  open with the step list · step 4 of 7 · ~5 min
 
 Ask for a few things they have written: an email they were pleased with, an old cover letter, a
 report, anything. Two or three is plenty. Say clearly it is optional.
@@ -181,7 +216,7 @@ interview, and tell them that is what you did.
 Explain what the file is for: it is theirs, and it is what to change when a generated document
 does not sound like them.
 
-## Phase 5 — Search settings  ·  announce as "Step 5 of 7, about 10 minutes"
+## Phase 5 — Search settings  ·  open with the step list · step 5 of 7 · ~10 min
 
 **Lead with example adverts.** Ask for two or three real job adverts they would genuinely apply
 for. A link or pasted text. This is much easier than inventing keywords and produces better
@@ -205,7 +240,7 @@ Also ask, and set:
 - **Page target**, with the convention explained: two pages for UK industry, one for a US
   résumé, more for academic.
 
-## Phase 6 — Job board keys  ·  announce as "Step 6 of 7, about 10 minutes, and optional"
+## Phase 6 — Job board keys  ·  open with the step list · step 6 of 7 · ~10 min · optional
 
 Frame it honestly and briefly: about ten minutes, free, and it means jobs get found without them
 looking. Then say just as clearly that pasting job links in by hand works just as well and plenty
@@ -218,7 +253,7 @@ time. Write the keys to `.claude/settings.local.json` under `env` yourself, and 
 If they decline, set `sources.manual: true` only and move on without comment. Do not raise it
 again on later runs.
 
-## Phase 7 — Backing up your profile  ·  announce as "Last one, 2 minutes"
+## Phase 7 — Backing up your profile  ·  open with the step list · step 7 of 7 · ~2 min
 
 Ask explicitly rather than leaving it to the README, because the people who would benefit are
 the ones least likely to read that section.

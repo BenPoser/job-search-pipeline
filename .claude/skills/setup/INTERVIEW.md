@@ -45,7 +45,7 @@ thin ones are worse than three real ones.
 
 ## Opening a role
 
-> Your CV says you were at Barnardo's for four years and that you "redesigned the referral
+> Your CV says you spent four years at the youth charity, and that you "redesigned the referral
 > intake process". Start there. What was actually wrong with it before?
 
 Starting with the problem rather than the achievement works better. People describe problems
@@ -201,7 +201,7 @@ have to happen now.
 
 **Open each role with its position**, so the end is always visible:
 
-> Role 2 of 5, Barnardo's, 2019 to 2023.
+> Role 2 of 5, the youth charity, 2019 to 2023.
 
 **Close each role with what remains, and offer the exit:**
 
