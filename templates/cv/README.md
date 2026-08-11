@@ -2,6 +2,11 @@
 
 Two outputs are produced for every application, from the same profile data.
 
+These two designs are starting points, not a house style. A user can supply their own CV, or one
+whose look they like, and have a template built from it into `my/templates/`. See
+`.claude/skills/apply/TEMPLATES.md`. A user template can be the default or used for a single
+application.
+
 ## The PDF path (`*.html`)
 
 For emailing a person, or applying directly to a small organisation. Design freedom within the

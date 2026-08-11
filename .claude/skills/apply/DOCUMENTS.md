@@ -6,11 +6,28 @@ Mechanics for each file in the application pack.
 
 ## The CV, as HTML
 
-Copy the template named in `preferences.cv_template` from `templates/cv/` and fill it in.
+### Choosing the template
 
-- **`classic.html`** — colour accent, skill chips. Industry, commercial, tech, charity, design.
-- **`plain.html`** — serif, no colour, conservative. Academia, law, medicine, finance, most
-  public sector, and the safer choice when the reader is unknown.
+`preferences.cv_template` in the profile names the default. It accepts either a shipped template
+or one of the user's own:
+
+- **`classic`** — colour accent, skill chips. Industry, commercial, tech, charity, design.
+- **`plain`** — serif, no colour, conservative. Academia, law, medicine, finance, most public
+  sector, and the safer choice when the reader is unknown.
+- **a path under `my/templates/`** — anything the user has made or asked for. See
+  [TEMPLATES.md](TEMPLATES.md).
+
+**A job file may override it.** If the job has `cv_template` set, that wins for this application
+only. Different sectors expect different documents, and someone applying across two of them
+should not have to keep changing their default.
+
+**Offer the override when it obviously matters**, without labouring it:
+
+> This one is a university research post. Your default is the one with the colour and the skill
+> chips, which tends to read as unserious in academia. Want me to use the plain one for this
+> application? I can make it your default for anything similar too.
+
+### Filling it in
 
 Fill the placeholders. Do not restructure the CSS, and in particular do not add
 `break-inside: avoid` to `.section`, which stops the forced page break working.

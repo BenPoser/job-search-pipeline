@@ -98,11 +98,25 @@ At roughly 9.5pt with normal spacing, an A4 page holds about 55 lines. Count bef
 
 **Decide the split before writing the HTML**, not afterwards. The templates put page one and
 page two in separate top-level divs precisely so the split is a decision rather than a
-negotiation with the print engine. Page one carries the header, summary, skills, and the most
-recent role. Everything else follows.
+negotiation with the print engine.
+
+**Fill page one.** The split makes the break reliable; it is not permission to leave a third of
+the page empty. Page one is the part most likely to be read, and white space at the bottom of it
+reads as a thin career rather than as design. Push content up until the page is genuinely full,
+then break.
+
+Typically that means the header, summary, skills, and the most recent role, but it depends
+entirely on how much the recent role carries. If it is short, pull the next role up. If it fills
+the page on its own, that is fine.
 
 If it overflows, cut an achievement rather than shrinking the type. A cramped CV reads as
 cramped.
+
+**If the user prefers content to flow and break naturally**, that is supported: put everything in
+a single `.cv-page-1` container and let the print engine break where it lands. The entry-level
+`break-inside: avoid` rules stop it splitting mid-entry. It is less predictable, which is why it
+is not the default, but some people would rather have continuous flow than a chosen split. It is
+their CV.
 
 ---
 

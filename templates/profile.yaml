@@ -20,7 +20,13 @@ personal:
 
 preferences:
   page_target: 2                   # 2 = UK industry, 1 = US resume, 6+ = academic
-  cv_template: classic             # see templates/cv/
+  # A shipped template (classic, plain), or a path to one of your own under
+  # my/templates/. Ask Claude to build you one from your existing CV, or from any
+  # CV whose look you like. A job file can override this for one application.
+  cv_template: classic
+  page_mode: split                 # split = the page break is chosen deliberately (default,
+                                   # predictable). flow = content runs on and breaks where it
+                                   # lands, never mid-entry.
   salary_expectation: null
   notice_period: null
 

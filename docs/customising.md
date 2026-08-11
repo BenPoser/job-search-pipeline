@@ -29,7 +29,8 @@ Everything is plain Markdown or YAML. Nothing is compiled, hidden, or magic.
 | `my/learnings.md` | What the tool thinks it has noticed. Delete anything you disagree with. |
 | `docs/quality-rules.md` | The craft standards applied to every document. |
 | `docs/tone.md` | How the commands talk to you. |
-| `templates/cv/` | What your CV looks like. |
+| `templates/cv/` | The two built-in CV designs. |
+| `my/templates/` | Your own CV designs. Survives updates. |
 | `.claude/skills/<command>/SKILL.md` | The commands themselves, in full. |
 
 ---
@@ -60,6 +61,31 @@ you. If you want it gentler, say so, but understand that you are asking to be se
 applications that will not go anywhere.
 
 ---
+
+## Making the CV look like yours
+
+There are two built-in designs and you are not stuck with either.
+
+**Use your existing CV's look.** If you already have a CV whose layout you like, ask for it:
+
+> Rebuild the layout of my old CV as a template and use that from now on.
+
+**Copy one you have seen.** A friend's, one you downloaded, anything. Send it and say you want
+the look, not the content.
+
+**Or just describe what you want.** "Single column, no colour, my name bigger, tighter spacing"
+is enough to work from. This is usually what people mean when they say a generated CV does not
+look like theirs.
+
+Your designs are saved in `my/templates/`, so updates never overwrite them. Set one as your
+default, or use a different one for a single application:
+
+> Use the plain one for this university job, but keep my usual one as the default.
+
+Two things stay fixed whatever the design. The Word version is always single column and plain,
+because that is the copy employers' systems read automatically and layout confuses them. And the
+page break stays predictable, unless you ask for content to flow and break wherever it lands,
+which is `page_mode: flow` in your profile.
 
 ## Adding a job board
 

@@ -71,6 +71,7 @@ my/
   search-config.yaml  what kind of roles you are looking for
   jobs/               roles that have been found, and what you decided about each
   applications/       one folder per application: CV, cover letter, interview prep
+  templates/          your own CV designs, if you want something other than the built-in ones
   learnings.md        what the search is telling you, in plain language
 ```
 
@@ -108,6 +109,11 @@ Every command is a plain Markdown file in `.claude/skills/`. Every rule is a pla
 in `docs/`. You can read them, and you can ask Claude to change them. If you want your CV to look
 different, your cover letters to be shorter, or an extra step in the process, say so and it will
 be so.
+
+Two things people change first: how the CV looks, and how the writing sounds. For the look, you
+can have it rebuild the layout of a CV you already have, copy one you like the look of, or just
+describe what you want. For the writing, `my/voice.md` is a plain description of how you write
+that you can edit directly.
 
 [docs/customising.md](docs/customising.md) shows you where the useful knobs are.
 

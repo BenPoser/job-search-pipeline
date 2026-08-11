@@ -218,6 +218,17 @@ interview, and tell them that is what you did.
 Explain what the file is for: it is theirs, and it is what to change when a generated document
 does not sound like them.
 
+**Then ask about how the CV should look**, since you already have theirs from step 1:
+
+> Two options for the look of it. I have a couple of built-in designs, or I can rebuild the
+> layout of the CV you already sent me so the new ones look like yours. Either is fine, and you
+> can change it whenever.
+
+If they want their own look, note it in the state file and build it at their first `/apply`,
+following `.claude/skills/apply/TEMPLATES.md`. Do not build it now; it needs real content and a
+printed page to judge, and setup is long enough. If they have no preference, set `classic` and
+move on without discussion.
+
 ## Phase 5 — Search settings  ·  open with the step list · step 5 of 7 · ~10 min
 
 **Lead with example adverts.** Ask for two or three real job adverts they would genuinely apply

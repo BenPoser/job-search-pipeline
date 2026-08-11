@@ -9,7 +9,8 @@ Build everything needed to apply for one job.
 
 Read [SELECTION.md](SELECTION.md) before choosing what goes on the CV, and
 [CLAIM-CHECK.md](CLAIM-CHECK.md) before finalising anything. [DOCUMENTS.md](DOCUMENTS.md) has
-the mechanics of producing each file.
+the mechanics of producing each file. [TEMPLATES.md](TEMPLATES.md) covers building a template
+from the user's own CV, or from one they like.
 
 ---
 

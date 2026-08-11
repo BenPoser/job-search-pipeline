@@ -69,6 +69,11 @@ suitability:
 
 search_cluster: core             # which cluster surfaced this, or 'manual'
 
+# Optional. Overrides preferences.cv_template for this application only, without
+# changing the default. Useful when applying across sectors with different
+# conventions, for example a conservative layout for a university post.
+cv_template: null
+
 # ---------------------------------------------------------------------------
 # Filled in later
 # ---------------------------------------------------------------------------
