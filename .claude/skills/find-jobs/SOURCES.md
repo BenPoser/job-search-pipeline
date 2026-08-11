@@ -97,9 +97,35 @@ against `"1"` explicitly. When it is set, put null in both salary fields and "no
 advert" in `salary_note`. A predicted figure is easy to spot by eye too, because it arrives with
 decimals: a real advert does not offer £47,993.64.
 
-**The description is truncated to 500 characters**, cut mid-word. Enough for a first-pass
-filter, useless for scoring. Where a job survives filtering, fetch `redirect_url` for the full
-advert before scoring it properly.
+**The description is truncated to 500 characters**, cut mid-word.
+
+**And `redirect_url` usually cannot be fetched.** Adzuna sits behind CloudFront, which returns
+403 to automated requests regardless of user agent. Assume refetching will fail rather than
+building a step around it.
+
+The consequence is unavoidable and must be handled honestly: **scores from an Adzuna search are
+provisional**, based on a 500-character summary rather than the advert. Say so in the report,
+and do not ask the user to paste a dozen adverts at search time to fix it. Get the full text at
+`/apply` time instead, when there is exactly one job and it is worth the thirty seconds.
+
+**Multi-word `what` terms narrow hard**, apparently matching all words rather than any. A search
+for `senior software engineer C# .NET` in London returned a single result where broader terms
+return hundreds. Prefer two or three distinctive words per search and run more searches, rather
+than one long precise-looking string that quietly returns nothing.
+
+**Contract day rates are annualised into `salary_min`**, with nothing in the structured fields
+saying so. A six-month contract at £500 per day appears as `salary_min: 130000`, which reads as
+an exceptional permanent salary and will float to the top of any ranking. `contract_type` is
+frequently absent, so it cannot be relied on to catch this.
+
+Detect it from the title and description instead: day rates, "IR35", "inside"/"outside",
+"3 months", "6 months", "interim", "fixed term". Where the user's config lists only `permanent`
+in `employment_types`, filter these out before scoring rather than letting an inflated figure
+distort the shortlist.
+
+**`/jobs/land/ad/...` links are interstitial redirect pages**, not adverts. They bounce to the
+original board, which is where the real text lives. Read the page after the redirect completes,
+not the moment it loads, or all you get is "You are now being redirected".
 
 **Fields come and go.** `contract_time` and `contract_type` are absent from many records rather
 than null. Read defensively and do not assume a key exists.

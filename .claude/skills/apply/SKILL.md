@@ -30,7 +30,21 @@ CV they have hand-edited destroys work, and the edited version is also the feedb
 
 ---
 
-## 1. Read the role properly
+## 1. Get the full advert
+
+If the job file has `description_truncated: true`, or the description is obviously a summary,
+**get the real advert before doing anything else.** Follow the ladder in
+[../../../docs/fetching-pages.md](../../../docs/fetching-pages.md).
+
+Tailoring a CV against 500 characters produces a document aimed at a job nobody advertised. The
+body also routinely contradicts the metadata: a listing whose structured location said Central
+London turned out, in the text, to be based near Edinburgh. That kind of thing decides whether
+to apply at all.
+
+If the full advert cannot be got and the user does not want to paste it, say plainly that the
+tailoring will be shallow, and let them choose whether to continue.
+
+## 2. Read the role properly
 
 Before writing anything, work out four things and say them out loud in a sentence or two, so the
 user can correct you before you spend effort on the wrong reading:

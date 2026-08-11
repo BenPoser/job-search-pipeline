@@ -47,9 +47,10 @@ List `my/jobs/` to build the seen-already set, keyed on `{source}-{source_id}`.
 
 ## 1. Get the advert
 
-**From a URL:** fetch it. If the fetch is blocked, hits a login wall, or returns a page with no
-advert on it, say so in one line and ask them to paste the text. Job boards block automated
-fetching constantly; it is not a fault and does not need explaining at length.
+**From a URL:** follow the ladder in [../../../docs/fetching-pages.md](../../../docs/fetching-pages.md).
+Try a direct fetch, then the user's own browser if Claude in Chrome is connected, then ask them
+to paste. Job boards block automated fetching constantly; it is not a fault and does not need
+explaining at length.
 
 **From pasted text:** use it as given.
 
@@ -137,11 +138,16 @@ What survives gets scored properly.
 
 ## 4. Score
 
-Per [SCORING.md](SCORING.md), against the full advert.
+Per [SCORING.md](SCORING.md).
 
-**Adzuna descriptions are truncated.** Where a job survives filtering and looks like it might
-matter, fetch the advert URL for the full text before scoring. Scoring a two-line summary
-produces a meaningless number.
+**Searched jobs are scored on a summary, not an advert.** Adzuna truncates descriptions to 500
+characters and its links cannot be refetched (see SOURCES.md). So a search score is a triage
+signal, not a judgement: good enough to decide what deserves a closer look, not good enough to
+decide what to apply for.
+
+Mark these jobs `description_truncated: true` in the job file, say so in the report, and let
+`/apply` get the full text when there is one job worth the effort. Do not ask the user to paste
+a dozen adverts to firm up scores they are about to discard anyway.
 
 Below `minimum_score`, discard without writing a file. Unlike the manual path, the user did not
 choose these, and writing dozens of weak jobs makes `/review-jobs` useless.

@@ -152,9 +152,11 @@ both fine. Read it.
 
 Then offer these, without pressure, in this order:
 
-1. **LinkedIn.** Ask for the URL and try fetching it. Public profiles sometimes work; often you
-   get an authentication wall. If it fails, say so plainly and ask for screenshots instead,
-   which is the reliable path. This is normal, not a failure.
+1. **LinkedIn.** Ask for the URL, then follow the ladder in
+   [../../../docs/fetching-pages.md](../../../docs/fetching-pages.md). A direct fetch usually
+   hits an authentication wall, but if Claude in Chrome is connected the profile loads normally,
+   because the user is already signed in there. Failing both, ask for screenshots. All three are
+   normal outcomes, not failures.
 2. **A LinkedIn data export**, only if they want to go deep. Settings → Data Privacy → Get a copy
    of your data. It takes up to 24 hours. **Never block on this.** Note it in the state file and
    carry on; a later session can read it whenever it lands.
