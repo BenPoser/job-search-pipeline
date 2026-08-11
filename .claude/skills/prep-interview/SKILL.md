@@ -1,76 +1,125 @@
 ---
 name: prep-interview
-description: Prepare for a specific interview: audit the claims most likely to be probed, run a mock interview, and produce a cheat sheet. Use when the user runs /prep-interview or has an interview coming up.
+description: Prepare for a specific interview - audit the claims most likely to be probed, run a mock interview, and produce a one-page cheat sheet. Use when the user runs /prep-interview, has an interview coming up, or asks how to prepare for one.
 ---
 
 # /prep-interview
 
-Prepare for a specific interview.
-
-**Status: Phase 2. Designed, not yet built. This file is the specification.**
+Prepare for one specific interview, grounded in what was actually claimed.
 
 ---
 
 ## The thing only this tool can do
 
-It knows exactly which document the interviewer is holding, because it wrote it. It knows which
-achievements were selected, how they were phrased, and which claims were thinnest, because the
-claim check in `/apply` produced that list.
+You know exactly which document the interviewer is holding, because you wrote it. You know which
+achievements were selected, how they were phrased, and which claims are thinnest, because
+`/apply` produced `weak-claims.md`.
 
-So this does not open with common interview questions. Anyone can get those anywhere. It opens
-with the claims on the user's own CV most likely to be probed, ranked by how thin the evidence
-behind them is:
+So do not open with common interview questions. Anyone can get those anywhere, and leading with
+them wastes the one advantage this has.
 
-> Three things on this CV will get probed. The strongest is the intake redesign, you have real
-> numbers there. The riskiest is "led the supplier migration": one sentence of evidence, no
-> metric, and at setup you were not sure whether you led it or co-led it. Let us build a real
-> answer for that first.
+Open with their own CV, and what will get probed:
 
-Everything else in this command is commodity. That is not.
+> Three things on this CV will get pushed on. The strongest is the AI adoption work, which is
+> exactly what they lead the advert with. The riskiest is "named production incident responder":
+> that traces to your old CV and nothing else, and at setup you had no specific incident to hand.
+> They are running a security-led role, so it is the first line they will pick up. Let us build a
+> real answer for it before anything else.
 
----
+## 1. Read
 
-## Reads
+- `my/applications/{slug}/` — the CV as sent, the cover letter, and `weak-claims.md`
+- The job file, for the advert and the recorded gaps
+- `my/profile.yaml` — the evidence behind everything
+- `my/learnings.md` — including questions actually asked at previous interviews
 
-The application folder (CV as sent, cover letter, `weak-claims.md`), the job advert,
-`my/profile.yaml`, and `my/learnings.md` including questions actually asked at previous
-interviews.
+If `weak-claims.md` is missing because the application predates it, do the claim audit yourself
+from the CV against the profile.
 
-## Shape
+## 2. Ask what kind of interview it is
 
-1. **Claim audit.** The weak evidence list turned into the questions it will generate.
-2. **Ask the format**, because it changes everything and varies enormously by field: competency
-   and STAR, technical, panel, presentation, case study, values-based. Do not assume.
-3. **Run a real mock.** The user answers, you push back for specificity, they go again. Do not
-   hand over model answers to memorise. A prepared answer that came out of their own mouth
-   survives follow-up questions; a memorised one does not.
-4. **Cover the standard ground** for the format, grounded in their evidence rather than in
-   general advice: why this role, why this organisation, the hardest thing they have delivered,
-   a difficult stakeholder, their genuine gap and what they have done about it.
-5. **Cheat sheet**, one page: stories mapped to likely competencies, the honest gap and its
-   answer, two or three questions worth asking the panel.
+This changes everything and varies enormously by field. Do not assume.
 
-## Persist
+Competency or behavioural, technical, panel, presentation, case study, values-based, or an
+informal first conversation. Also ask who is in the room if they know, because a hiring manager,
+a future peer and an HR screener want different things from the same answer.
 
-Write to the application folder:
+If they do not know, say what is most likely for that kind of employer, prepare for that, and
+name the assumption.
 
-- `interview-prep.md`, the cheat sheet
-- `interview-transcript.md`, the full mock
+## 3. The claim audit
 
-Keep the transcript. Rereading a fumbled first answer is useful, and it is more evidence about
-how the user actually talks, which feeds the voice profile.
+Work through the weak claims, hardest first. For each: what will be asked, what the honest answer
+is, and what evidence supports it.
 
-## Write back to the profile
+Where the honest answer is "I do not have a strong example", say so, and decide together whether
+to drop the claim in the interview or hold a smaller true version of it. Better now than live.
 
-People routinely produce their best articulation of an achievement under interview pressure,
-better than anything they said during setup. When that happens, update the achievement in
-`my/profile.yaml` with provenance `interview` and the date, and tell the user you have done it.
+## 4. The gaps
 
-This means `/prep-interview` mutates the profile. That is deliberate: the best material should
+Every application has at least one. It is in the job file under `suitability.gaps`, and the
+interviewer has already seen it.
+
+Build a straight answer: name it, say what is adjacent, say what they are doing about it if
+anything, then stop. The failure mode is over-explaining, which reads as defensive.
+
+## 5. Run the mock
+
+Properly. The user answers, you push back, they answer again. Do not hand over model answers to
+memorise: an answer that came out of their own mouth survives a follow-up question, and a
+memorised one does not.
+
+**How to push back:**
+
+- Ask for the specific instance when they generalise
+- Ask what *they* did when they say "we"
+- Ask for the number, or for how they knew it worked
+- Ask the obvious follow-up, especially "what would you do differently?"
+- Interrupt once or twice if answers run long, the way a real panel does
+
+**Cover, at minimum:**
+
+- Why this role, why this organisation. Generic answers here are the most common failure, and for
+  an agency listing with an unnamed client the honest version is about the work, not the employer.
+- Their strongest relevant story, told in about two minutes
+- The gap
+- A failure, or something that went wrong, which almost every interview asks for in some form
+- Questions to ask the panel
+
+**Keep it to a sensible length.** Five or six questions answered well beats twenty rushed. Offer
+to stop and continue later.
+
+## 6. Write the cheat sheet
+
+One page, to `my/applications/{slug}/interview-prep.md`:
+
+- Three or four stories mapped to the competencies likely to come up, each in a line or two so
+  they can be scanned rather than read
+- The gap, and the prepared answer
+- The weak claims, and what to say if pushed
+- Two or three questions to ask, showing they have understood the work rather than filling a slot
+- Anything practical: format, who is in the room, timings
+
+## 7. Save the transcript
+
+Write the full mock to `my/applications/{slug}/interview-transcript.md`.
+
+Rereading a fumbled first answer is useful, and it is more evidence about how the user actually
+talks, which feeds the voice profile.
+
+## 8. Write back to the profile
+
+People routinely produce their best articulation of an achievement under pressure, better than
+anything they said at setup. When that happens, update the achievement in `my/profile.yaml` with
+provenance `interview` and today's date, and tell the user you have done it.
+
+This means `/prep-interview` changes the profile. That is deliberate: the best material should
 not be trapped in a transcript.
 
-## Afterwards
+If a mock answer resolves something on the weak-claims list, update that too, so the claim stops
+being flagged on future applications.
 
-Remind them to run `/log-outcome` after the interview **while the questions are still fresh**,
-because which questions were actually asked is dense, immediate, uncorrupted information and it
-makes every future preparation session better.
+## 9. Close
+
+Remind them to run `/log-outcome` afterwards **while the questions are still fresh**. What was
+actually asked is the most useful thing they can bring back, and it is gone within a day.

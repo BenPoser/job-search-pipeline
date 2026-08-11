@@ -54,11 +54,15 @@ Pick the least technical friend available, not the most forgiving one.
 
 ## Phase 2 — The learning loop
 
-- [ ] `/log-outcome`, including questions actually asked at interview
-- [ ] Edit capture: diff `generated/` against what was sent
-- [ ] `my/learnings.md` observations, and reading them back in `/find-jobs` and `/apply`
-- [ ] `/prep-interview`, opening from the weak claims list
-- [ ] `/update-profile`, including narrative generation
+- [x] `/log-outcome`, including questions actually asked at interview
+- [x] Edit capture: diff `generated/` against what was sent
+- [x] `my/learnings.md` observations, and reading them back in `/find-jobs` and `/apply`
+- [x] `/prep-interview`, opening from the weak claims list
+- [x] `/update-profile`, including narrative generation
+
+All written, none exercised. They cannot be properly tested until real applications have been
+sent and come back, which takes weeks rather than a session. Expect the first real
+`/log-outcome` run to find things, the way the first end-to-end run did.
 
 ---
 

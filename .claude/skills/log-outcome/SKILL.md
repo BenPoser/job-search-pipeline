@@ -1,72 +1,112 @@
 ---
 name: log-outcome
-description: Record what happened after an application and update the learnings file. Use when the user runs /log-outcome or reports a rejection, interview invitation or offer.
+description: Record what happened after an application, capture what the user changed before sending, and update the learnings file. Use when the user runs /log-outcome or mentions a rejection, an interview invitation, an offer, or that they have heard nothing back.
 ---
 
 # /log-outcome
 
-Record what happened after applying, and write what can honestly be learned from it.
-
-**Status: Phase 2. Designed, not yet built. This file is the specification.**
+Record the result, learn what can honestly be learned, and stop.
 
 ---
 
 ## Tone
 
-This command exists mostly to record rejections. `docs/tone.md` is binding here.
+This command exists mostly to record rejections. `docs/tone.md` applies with particular force.
 
-Record it and move on. No cushioning, no encouragement, no exclamation marks. The user is an
-adult who knows what the process is like, and a piece of software saying so is worth nothing.
+Record it and move on. No cushioning, no encouragement, no exclamation marks on bad news. The
+user knows what the process is like and does not need a piece of software to acknowledge it.
 
 ---
 
-## Capture
+## 1. Find the application
 
-For the application: `interview`, `rejection`, `silence`, or `offer`, with a date.
+`/log-outcome <slug>`, or with no argument list applications with no outcome recorded, oldest
+first, and ask which. If they have just told you what happened ("heard back from Acme, no luck"),
+match it yourself rather than making them pick from a list.
 
-**If there was an interview, ask which questions were actually asked.** Ask it in the same
-breath, while they still remember. This is the densest, cleanest data the whole system ever
-gets: immediate, specific, and not confounded by anything. Store it against the application and
-in the learnings file.
+## 2. Record the outcome
 
-If they have feedback from the employer, capture it verbatim. It is rare and worth more than any
-inference.
+Ask what happened, unless they have already said. One of `interview`, `rejection`, `silence`,
+`offer`. Write it to the job file's `outcome` block with today's date.
 
-## Edit capture
+**If they were interviewed, ask what they were actually asked.** Do it now, in the same breath,
+while they still remember:
 
-Compare `generated/` against what is now in the application folder. The diff is the primary
-feedback signal (`docs/adr/0004`): it exists for every application, arrives within minutes, and
-unlike an outcome it is not contaminated by whether the employer had already decided.
+> What did they actually ask you? Even roughly. It makes the next prep session much better.
 
-Look for:
+This is the densest, cleanest data the system ever gets: immediate, specific, and not confounded
+by anything. Store it in `outcome.questions_asked`.
 
-- **Achievements swapped out.** The selection was wrong. Which tags misled it?
-- **Rephrasing.** The voice profile is off. Update `my/voice.md` and say that you have.
-- **Cuts.** Something was judged irrelevant, or too long.
-- **Additions.** Something was missing from the profile. Offer to add it.
+**If the employer gave feedback, capture it verbatim.** It is rare and worth more than any
+inference drawn from silence.
 
-## Observations
+**Silence is a valid outcome and should be recordable without ceremony.** Do not push someone to
+categorise a non-response as a rejection.
 
-Append plain-language observations to `my/learnings.md`. Never numeric weights, never a claimed
-model. See `docs/adr/0004` for why.
+Update `status` on the job: `closed` for a rejection or a declined offer, `interviewing` where a
+process is live, `applied` where it is still silence.
 
-> Every role that has reached interview mentioned stakeholder management in the first three lines
-> of the advert. The two that went quiet did not.
+## 3. Capture the edits
+
+**This is the more valuable half of this command**, and the user does not have to do anything for
+it.
+
+Compare the files in the application folder against their copies in `generated/`. The difference
+is what the user changed before sending, which is a direct correction of the tool's judgement,
+arriving within minutes rather than weeks and uncontaminated by whether the employer had already
+decided.
+
+```bash
+diff -u my/applications/{slug}/generated/cv.html my/applications/{slug}/cv.html
+```
+
+Read the differences for meaning, not as a patch. Four things to look for:
+
+- **An achievement swapped out or removed.** The selection was wrong. Which tags or reasoning led
+  you to it? Note it, because selection errors repeat.
+- **Rephrasing that keeps the meaning.** The voice profile is off. Update `my/voice.md` and say
+  that you have. This is the fastest way that file gets good.
+- **Cuts.** Something read as irrelevant, or the document ran long.
+- **Additions.** Something was missing from the profile. Offer to add it properly with
+  provenance.
+
+If nothing changed, that is information too: say so briefly and move on. Do not manufacture a
+finding.
+
+Where a pattern appears across several applications, act on it rather than only noting it. If the
+user has rewritten the same kind of bullet three times, the voice profile needs changing, not the
+learnings file.
+
+## 4. Write observations
+
+Append to `my/learnings.md` in plain language. Never numeric weights, never a claimed model
+(`docs/adr/0004`).
+
+```markdown
+## 11 Aug 2026
+Every role that reached interview named stakeholder management in the first three lines of the
+advert. The two that went quiet did not. Worth weighting that higher in scoring.
+```
 
 Rules:
 
-- Written so the user can read, argue with, and delete them. They know things about their own
-  search that the log does not contain.
+- **Written so the user can argue with them.** They know things about their own search that the
+  log does not contain.
 - **Say when there is not enough data.** With four applications logged, "not enough yet to see a
   pattern" is the correct output. Inventing one is worse than saying nothing.
-- Distinguish signal from base rate. Silence is the normal outcome and usually says nothing about
-  the candidate. Do not build an observation on top of it unless the pattern is stark.
-- **Whenever a ratio is shown, show the base rate with it.** A five to ten percent response rate
-  is ordinary in a competitive market. Reporting "two responses from twenty two" without that
-  context is a true number that misleads.
+- **Do not build an observation on silence** unless the pattern is stark. Silence is the normal
+  outcome and usually says nothing about the candidate.
+- **Separate the two kinds.** An observation about what employers respond to is different from an
+  observation about what the tool got wrong. Both are useful; conflating them is not.
 
-## Effect
+## 5. Report
 
-`/find-jobs` and `/apply` read `my/learnings.md` and let it influence scoring and selection.
-When it does, they say so in their rationale, so the influence is visible and can be disagreed
-with.
+Short. What was recorded, anything learned, and the base rate if a ratio comes up:
+
+> Recorded: rejection, 11 Aug. You cut two bullets and rewrote the summary before sending, both
+> toward shorter sentences, so I have tightened that in your voice profile.
+>
+> That is 2 responses from 22 applications. Within the normal range; most applications go
+> unanswered regardless of the candidate.
+
+Then one next step, usually `/review-jobs` or `/find-jobs`. If there is nothing to do, say so.
