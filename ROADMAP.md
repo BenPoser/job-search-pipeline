@@ -18,9 +18,9 @@ application without the author sitting next to them.
 - [x] `/review-jobs`
 - [x] `/status`
 - [x] `/apply` — claim check, both output formats, and the `generated/` snapshot
-- [x] Two CV templates (classic, plain), plus a stdlib DOCX builder. The DOCX package is
-      verified as valid and extracts cleanly; neither template has been through a real print
-      to PDF yet.
+- [x] Two CV templates (classic, plain), plus a stdlib DOCX builder. DOCX package verified
+      valid and extracting cleanly. `classic` verified through a real HTML to PDF print,
+      page break landing correctly. `plain` not yet printed.
 
 Build order is that order. Nothing can be tested until `/setup` exists, and the manual paste path
 in `/find-jobs` unblocks everything downstream without needing an API key.
@@ -34,9 +34,13 @@ to recover later.
 
 ---
 
-## Phase 1 is code complete, and untested end to end
+## Phase 1 is done and verified end to end
 
-Nothing above has been run start to finish by anyone. Do that before Phase 2.
+Run on live Adzuna listings, 11 Aug 2026: find, score, review, apply, print. Three design
+failures found and fixed in the process (page fetching, contract day rates annualised into
+salary, metadata contradicting the advert body). See docs/fetching-pages.md.
+
+Still unverified: the Reed source, and the `plain` CV template through a print.
 
 ## Test with a real person before starting Phase 2
 
