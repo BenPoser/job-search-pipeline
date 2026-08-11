@@ -74,12 +74,16 @@ my/
   learnings.md        what the search is telling you, in plain language
 ```
 
-**By default, `my/` is excluded from version control**, so you cannot accidentally publish your
-career history, your salary expectations, or your phone number. Setup will offer you the choice
-of committing it to a **private** repository instead, which gives you a backup and a history of
-how your profile has grown. Both are reasonable. Setup explains the trade-off when it asks.
+**By default, `my/` is excluded from version control**, so nothing personal is committed unless
+you ask for it. Setup offers you the alternative: keep it in a **private** repository, which
+gives you a backup and a history of how your profile grows.
 
-Never make a repository containing your `my/` folder public.
+Either is fine. A private repository stays private until you deliberately change that in its
+settings, and you can still give specific people access without publishing it. The only thing to
+keep in mind is that this folder holds your full career history, contact details and salary
+expectations, so it is not one to make public later.
+
+You can also skip git entirely and set it up whenever you feel like it.
 
 ---
 

@@ -45,9 +45,11 @@ before the document is finished. This is the one thing the tool will not let you
 because a claim that collapses in an interview is the worst outcome it could produce for you.
 You can make it quieter by making your profile more precise, which is the better fix anyway.
 
-**Your `my/` folder is excluded from version control by default.** If you turn that off, make
-absolutely sure the repository is private. It contains your full career history, your contact
-details, and your salary expectations.
+**Your `my/` folder is excluded from version control by default.** You can turn that off to get
+a backup and a history, as long as the repository is private. Private repositories stay private
+unless you deliberately publish them, and you can share one with named people without making it
+public. Just keep in mind that the folder holds your full career history, contact details and
+salary expectations, so it is not one to publish later.
 
 **Quality rules override your voice profile.** If you write a voice rule that contradicts a
 quality rule, the quality rule wins. If you disagree with a quality rule, change the quality

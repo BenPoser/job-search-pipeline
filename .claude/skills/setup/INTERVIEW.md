@@ -195,10 +195,25 @@ lived through.
 
 ## Pacing
 
-Check in at each role boundary:
+This phase is thirty to forty-five minutes of sustained questions and it is the point where
+people flag. Two things keep them going: knowing how much is left, and knowing it does not all
+have to happen now.
 
-> That's Barnardo's done, four solid things. Two roles left, about fifteen minutes. Keep going,
-> or pick this up later?
+**Open each role with its position**, so the end is always visible:
+
+> Role 2 of 5, Barnardo's, 2019 to 2023.
+
+**Close each role with what remains, and offer the exit:**
+
+> That's four solid things from Barnardo's. Two roles left, about fifteen minutes. Keep going,
+> or pick this up later? It resumes exactly here.
+
+**Say more than once that this is not their last chance.** People slow down and strain to
+remember everything because they think the record closes when the interview ends. It does not,
+and telling them so speeds them up:
+
+> Don't worry about catching everything now. Anything that comes back to you later goes in with
+> `/update-profile`, and things tend to surface once you start applying.
 
 Save state after every role. If they stop, they stop. Resuming is designed for.
 

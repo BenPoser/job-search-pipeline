@@ -48,8 +48,29 @@ notes:
 Someone in a field where CV bullets are not the norm should not be walked through questions
 built for one where they are.
 
-**Show progress at each phase boundary**, briefly: "That's your profile done. Two short things
-left, about ten minutes." People need to know how much more there is.
+**Always show where they are.** This is a long process and it feels longer when you cannot see
+the end of it. Open every phase with a one-line marker, and close every phase with what is left:
+
+```
+Step 3 of 7 — Themes. About 5 minutes.
+```
+
+The user-facing numbering runs 1 to 7 and maps to phases 1 to 7. Phase 0 and phase 8 are
+orientation and wrap-up; do not number them, they are not work.
+
+> Done. Five roles, nineteen achievements. Three short steps left, about fifteen minutes.
+
+Inside the interview, which is by far the longest phase, mark each role the same way:
+"Role 2 of 5". Someone who knows there are three left will keep going. Someone who does not
+know assumes it is endless.
+
+**Keep reminding them this is not their only chance.** People slow down because they are trying
+to remember everything now. Say, more than once and in your own words, that the profile is meant
+to grow and that anything forgotten can be added later with `/update-profile`. It speeds them up
+and it is true.
+
+**Offer the stopping point rather than waiting to be asked.** At any natural boundary, if they
+have been going a while: "Good place to stop if you want one. `/setup` picks up here."
 
 **Tone**: see `docs/tone.md`. Plain and useful. No cheerleading.
 
@@ -57,10 +78,29 @@ left, about ten minutes." People need to know how much more there is.
 
 ## Phase 0 — Orientation
 
-Say what is about to happen: roughly an hour, they can stop whenever and resume with `/setup`,
-and the result is a profile that every later command works from.
+**Show them the whole map before starting.** Knowing what is coming is most of what makes a long
+process bearable, and it lets people prepare: someone who knows step 4 wants writing samples can
+have one ready.
 
-Ask two things:
+> Here's the whole thing. About an hour, and you can stop at any point and pick up where you
+> left off.
+>
+> ```
+> 1. Your CV and anything else you have      5 min
+> 2. The interview, one role at a time      30-45 min   ← the long one
+> 3. Themes from your career                 5 min
+> 4. How you write                           5 min
+> 5. What you're looking for                10 min
+> 6. Job board accounts (optional)          10 min
+> 7. Backing up your profile                 2 min
+> ```
+>
+> Step 2 is most of it. The rest is quick.
+
+Say plainly that nothing here is one-shot: the profile is designed to grow, and anything they
+forget can be added later.
+
+Then ask two things:
 
 1. What kind of work do they do?
 2. What kind of move are they making: more of the same, a step up, or a change of field?
@@ -70,7 +110,7 @@ different questions from someone going for the next rung.
 
 Write `my/setup-state.yaml`.
 
-## Phase 1 — Documents
+## Phase 1 — Documents  ·  announce as "Step 1 of 7, about 5 minutes"
 
 Ask for their current CV. They can drag it into the chat or drop it in `my/inbox/`. PDF or DOCX
 both fine. Read it.
@@ -95,7 +135,7 @@ Then tell them what you have, honestly:
 > That gives me five roles going back to 2014, and about twelve things you did. Most are
 > one-line claims with no detail, which is what a CV is. That's what the next part is for.
 
-## Phase 2 — The interview
+## Phase 2 — The interview  ·  announce as "Step 2 of 7, 30 to 45 minutes"
 
 **Read [INTERVIEW.md](INTERVIEW.md) now.** It has the technique, the question bank, and how to
 handle overstatement.
@@ -105,7 +145,7 @@ most recent first, because recent work matters most and energy fades.
 
 Save state after each role, noting which are done.
 
-## Phase 3 — Taxonomy
+## Phase 3 — Taxonomy  ·  announce as "Step 3 of 7, about 5 minutes"
 
 Generate this person's taxonomy from the profile you now have: domains, capabilities, and career
 stages, in their own field's language.
@@ -122,7 +162,7 @@ Show it to them in plain language, not as YAML:
 
 Two or three corrections here improve every later selection. Write it into `my/profile.yaml`.
 
-## Phase 4 — Voice
+## Phase 4 — Voice  ·  announce as "Step 4 of 7, about 5 minutes"
 
 Ask for a few things they have written: an email they were pleased with, an old cover letter, a
 report, anything. Two or three is plenty. Say clearly it is optional.
@@ -141,7 +181,7 @@ interview, and tell them that is what you did.
 Explain what the file is for: it is theirs, and it is what to change when a generated document
 does not sound like them.
 
-## Phase 5 — Search settings
+## Phase 5 — Search settings  ·  announce as "Step 5 of 7, about 10 minutes"
 
 **Lead with example adverts.** Ask for two or three real job adverts they would genuinely apply
 for. A link or pasted text. This is much easier than inventing keywords and produces better
@@ -165,7 +205,7 @@ Also ask, and set:
 - **Page target**, with the convention explained: two pages for UK industry, one for a US
   résumé, more for academic.
 
-## Phase 6 — Job board keys (optional)
+## Phase 6 — Job board keys  ·  announce as "Step 6 of 7, about 10 minutes, and optional"
 
 Frame it honestly and briefly: about ten minutes, free, and it means jobs get found without them
 looking. Then say just as clearly that pasting job links in by hand works just as well and plenty
@@ -178,22 +218,36 @@ time. Write the keys to `.claude/settings.local.json` under `env` yourself, and 
 If they decline, set `sources.manual: true` only and move on without comment. Do not raise it
 again on later runs.
 
-## Phase 7 — Backup choice
+## Phase 7 — Backing up your profile  ·  announce as "Last one, 2 minutes"
 
-Ask this explicitly. Do not leave it to the README, because the people at risk are exactly the
-ones who will not read that section.
+Ask explicitly rather than leaving it to the README, because the people who would benefit are
+the ones least likely to read that section.
 
-> Your profile lives only on this computer right now. I can commit it to a **private** GitHub
-> repository instead, so you have a backup and a history as it grows. The only risk is if that
-> repository is ever made public, because this file has your full career history, contact
-> details and salary expectations. Which would you rather?
+Be accurate about the risk, which is small and entirely within their control. A private
+repository does not become public by accident; publishing one is a deliberate change in its
+settings. And private does not mean private to them: they can give specific people access
+without it being public at all.
 
-**If they choose backup:** check the remote is private first (`gh repo view --json visibility`).
-If it is public, refuse, explain why, and offer to make it private. If private, remove the `my/*`
-line from `.gitignore`, commit, and tell them it is done.
+> Right now your profile only exists on this computer. I can also keep it in a **private**
+> GitHub repository, which gives you a backup and a history of how it grows.
+>
+> Private means only you can see it, unless you deliberately invite someone. It won't become
+> public on its own. The one thing to keep in mind is that this file has your full career
+> history, contact details and salary expectations, so it's not one to publish later.
+>
+> Want me to set that up, or leave it as files on this machine?
 
-**If they decline:** leave the default, and mention once that the folder is worth copying
-somewhere occasionally.
+**If they choose backup and there is a remote:** check it is private
+(`gh repo view --json visibility`). If it is public, do not commit. Explain, and offer to make
+it private. If private, remove the `my/*` line from `.gitignore`, commit, and confirm it is done.
+
+**If they choose backup and there is no remote yet:** offer to create a private repository for
+them. If they would rather not deal with GitHub now, say that is fine and it can be set up any
+time later, then leave the default. This is not a now-or-never decision and should not be
+presented as one.
+
+**If they decline:** leave the default and mention once, without labouring it, that the `my/`
+folder is worth copying somewhere occasionally.
 
 ## Phase 8 — Finish
 
