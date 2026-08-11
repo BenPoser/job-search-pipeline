@@ -11,7 +11,7 @@ The bar is a real user, in a field that is not software, getting from nothing to
 application without the author sitting next to them.
 
 - [x] `/setup` — written, including the interview guide and the API key walkthrough.
-      Untested against a real person.
+      Run once by the author, including a resume across two sittings.
 - [x] `/find-jobs` — manual path, with the scoring rubric in SCORING.md
 - [x] `/find-jobs` — Adzuna and Reed. Adzuna verified against the live API; Reed is written
       from documentation only and has never been run.
@@ -19,8 +19,9 @@ application without the author sitting next to them.
 - [x] `/status`
 - [x] `/apply` — claim check, both output formats, and the `generated/` snapshot
 - [x] Two CV templates (classic, plain), plus a stdlib DOCX builder. DOCX package verified
-      valid and extracting cleanly. `classic` verified through a real HTML to PDF print,
-      page break landing correctly. `plain` not yet printed.
+      valid and extracting cleanly. Both templates verified through a real HTML to PDF print,
+      page breaks landing correctly.
+- [x] User-supplied CV designs, defaulted or overridden per application
 
 Build order is that order. Nothing can be tested until `/setup` exists, and the manual paste path
 in `/find-jobs` unblocks everything downstream without needing an API key.
