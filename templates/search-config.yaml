@@ -55,8 +55,11 @@ clusters:
 # Filtering
 # ---------------------------------------------------------------------------
 
-minimum_score: 5                   # below this, a found job is not written to my/jobs/
+minimum_score: 5                   # below this, a searched job is not written to my/jobs/.
+                                   # Jobs the user pastes in are always written, whatever
+                                   # they score, because the user chose them.
 max_results_per_search: 25
+max_days_old: 14                   # ignore adverts older than this. Most are already filled.
 
 # Terms that reliably indicate a role is not relevant. Built up over time as the
 # user dismisses jobs. Broad keyword searches pull in adjacent industries that

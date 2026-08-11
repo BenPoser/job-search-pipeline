@@ -1,7 +1,28 @@
 # Job board sources
 
-**Not wired up yet.** `/find-jobs` currently handles the manual path only. This file holds what
-is needed to build the automatic path, and the shape any future source should follow.
+Reference for the automatic search path. Read when `/find-jobs` runs a search.
+
+---
+
+## Credentials
+
+Keys live in `.claude/settings.local.json` under `env`, which puts them in the environment as
+`ADZUNA_APP_ID`, `ADZUNA_APP_KEY` and `REED_API_KEY`.
+
+**Always pass them as shell variables, never as literal values.** A command containing the
+actual key prints the key into the conversation, where it stays. Write `"$ADZUNA_APP_KEY"`, not
+the key itself. The same applies when reporting errors: say "the Adzuna key was rejected", never
+quote the key back.
+
+Check what exists before searching:
+
+```bash
+[ -n "$ADZUNA_APP_ID" ] && [ -n "$ADZUNA_APP_KEY" ] && echo "adzuna ok"
+[ -n "$REED_API_KEY" ] && echo "reed ok"
+```
+
+If a variable is empty but the config says the source is active, the keys were never saved or
+the environment has not picked them up. Say so, skip that source, carry on.
 
 ---
 
@@ -11,7 +32,7 @@ Four things, and nothing more elaborate is needed until there are more than thre
 
 1. **Endpoint** and query parameters
 2. **Authentication** method
-3. **Field mapping** from their response to `templates/job.yaml`
+3. **Field mapping** to `templates/job.yaml`
 4. **Paging** rule
 
 There is no plugin framework and there should not be one yet.
@@ -20,63 +41,123 @@ There is no plugin framework and there should not be one yet.
 
 ## Adzuna
 
-Covers around twenty countries. Country is a path segment, not a parameter.
+Multi-country. **The country is a path segment, not a parameter.**
 
+```bash
+curl -s --get "https://api.adzuna.com/v1/api/jobs/${COUNTRY}/search/1" \
+  --data-urlencode "app_id=$ADZUNA_APP_ID" \
+  --data-urlencode "app_key=$ADZUNA_APP_KEY" \
+  --data-urlencode "what=senior analyst" \
+  --data-urlencode "results_per_page=20" \
+  --data-urlencode "max_days_old=14" \
+  --data-urlencode "salary_min=40000"
 ```
-GET https://api.adzuna.com/v1/api/jobs/{country}/search/{page}
-  app_id={ADZUNA_APP_ID}
-  app_key={ADZUNA_APP_KEY}
-  what={search term}
-  salary_min={floor}
-  results_per_page={n}
+
+`--data-urlencode` with `--get` handles encoding, so multi-word terms need no escaping.
+
+**Pipe the response, do not write it to a file.** On Windows this is `curl.exe`, which does not
+understand Git Bash paths like `/tmp/x.json` or `/c/Users/...` and fails with a file-not-found
+that looks like a network problem. Piping straight into whatever parses the JSON avoids the
+whole class of problem and works identically on every platform.
+
+**Do not pass `where` for a country-wide search.** The path segment already scopes it, and
+passing a country name returns zero results with no error: `where=United Kingdom` against
+`/gb/` gives `count: 0` while the same query without it gives hundreds. Use `where` only to
+narrow to a city or region, and only when the user's config has a city.
+
+**An unsupported country returns 404 with the authoritative list in the response**, so there is
+no need to hardcode one:
+
+```json
+{"exception":"UNSUPPORTED_COUNTRY",
+ "display":"The currently supported ISO 3166 country codes are at, au, be, br, ca, ch, de,
+            es, fr, gb, in, it, mx, nl, nz, pl, sg, us, za"}
 ```
 
-**Do not pass `where` for a country-wide search.** The country path segment already scopes it,
-and passing a country name as `where` returns zero results. Use `where` only to narrow to a city
-or region.
+Read the list out of the error and tell the user which countries are covered, rather than
+guessing or repeating a list that may have gone stale.
 
-Response fields map as: `id` → source_id, `title` → job_title, `company.display_name` →
-organisation, `location.display_name` → location, `salary_min` / `salary_max` → salary,
-`created` → date_posted, `redirect_url` → url, `description` → description, `category.label` →
-sector.
+**Field mapping**
 
-**Treat a predicted salary as absent.** Where the response marks the salary as estimated rather
-than stated, set both salary fields null and note it. Their estimates are frequently wrong and a
-wrong salary is worse than none.
+| Response | Job file |
+|---|---|
+| `id` | `source_id` |
+| `title` | `job_title` |
+| `company.display_name` | `organisation` |
+| `location.display_name` | `location` |
+| `salary_min` / `salary_max` | salary, subject to the rule below |
+| `created` | `date_posted` |
+| `redirect_url` | `url` |
+| `description` | `description`, though it is usually truncated |
+| `category.label` | `sector` |
 
-**Broad terms pull in other industries.** Words that mean one thing in the user's field often
-mean something else elsewhere, and the aggregator does not know the difference. Filter on the
-config's `exclude_terms` and score the rest honestly.
+**Treat a predicted salary as absent.** `salary_is_predicted` is the **string** `"1"`, not a
+boolean, so a truthiness check on it is always true and would discard every salary. Compare
+against `"1"` explicitly. When it is set, put null in both salary fields and "not stated in
+advert" in `salary_note`. A predicted figure is easy to spot by eye too, because it arrives with
+decimals: a real advert does not offer £47,993.64.
+
+**The description is truncated to 500 characters**, cut mid-word. Enough for a first-pass
+filter, useless for scoring. Where a job survives filtering, fetch `redirect_url` for the full
+advert before scoring it properly.
+
+**Fields come and go.** `contract_time` and `contract_type` are absent from many records rather
+than null. Read defensively and do not assume a key exists.
+
+**Paging**: the final path segment is the page number, starting at 1. One page is almost always
+enough; only page further if the user explicitly wants more volume.
 
 ## Reed
 
 United Kingdom only. Skip entirely for users elsewhere.
 
-```
-GET https://www.reed.co.uk/api/1.0/search
-Authorization: Basic base64(REED_API_KEY + ":")
-  keywords={search term}
-  locationName={location}
-  minimumSalary={floor}
-  resultsToTake={n}
+**Untested.** Everything documented for Adzuna below was checked against the live API. Reed was
+not, for want of a key. Treat the details here as likely rather than confirmed, and verify on
+first use.
+
+```bash
+curl -s --get -u "$REED_API_KEY:" "https://www.reed.co.uk/api/1.0/search" \
+  --data-urlencode "keywords=senior analyst" \
+  --data-urlencode "locationName=Manchester" \
+  --data-urlencode "minimumSalary=40000" \
+  --data-urlencode "resultsToTake=20"
 ```
 
-Response fields map as: `jobId` → source_id, `jobTitle` → job_title, `employerName` →
-organisation, `locationName` → location, `minimumSalary` / `maximumSalary` → salary, `date` →
-date_posted, `expirationDate` → deadline, `jobUrl` → url, `jobDescription` → description.
+The trailing colon after the key matters: Reed uses Basic auth with the key as username and an
+empty password. `curl -u` handles the encoding.
+
+**Field mapping**
+
+| Response | Job file |
+|---|---|
+| `jobId` | `source_id` |
+| `jobTitle` | `job_title` |
+| `employerName` | `organisation` |
+| `locationName` | `location` |
+| `minimumSalary` / `maximumSalary` | salary |
+| `date` | `date_posted` |
+| `expirationDate` | `deadline` |
+| `jobUrl` | `url` |
+| `jobDescription` | `description`, truncated |
+
+Reed dates come as `DD/MM/YYYY`. Convert to ISO before writing.
+
+Reed has no "posted within N days" parameter. Filter on `date` after fetching.
+
+**Paging**: `resultsToSkip`, with `resultsToTake`. Same advice: one page is normally enough.
 
 ---
 
-## When this gets built
+## Errors
 
-**Missing credentials are not an error.** Skip that source, note it in the report, carry on. If
-no source has keys, that is the normal case, not a failure.
+Handle per source and never stop the whole run:
 
-**Validate the country against Adzuna's supported list** before searching, and fall back to
-manual-only with a plain explanation rather than returning nothing.
+| Symptom | Meaning | Do |
+|---|---|---|
+| 401 or 403 | Key wrong or not activated | Say which source, suggest re-running `/setup` to re-enter it, skip |
+| 404 on Adzuna | Country not supported | Read the supported list out of the response, tell the user, fall back to manual-only |
+| 429 | Rate limited | Wait a few seconds, retry once, then skip |
+| Empty results everywhere | Usually `where` passed for a country search, or too high a salary floor | Check both before reporting "no jobs" |
+| Timeout or network error | Transient | Retry once, then skip |
 
-**Deduplicate across sources.** The same role appears on multiple boards under different ids.
-Matching on organisation plus title plus location catches most of it.
-
-**Scoring is identical regardless of source.** A job found automatically and a job pasted in by
-hand go through the same rubric and produce the same file.
+A failed source is a line in the report, not an interruption. The manual path always works.

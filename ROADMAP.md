@@ -13,9 +13,8 @@ application without the author sitting next to them.
 - [x] `/setup` — written, including the interview guide and the API key walkthrough.
       Untested against a real person.
 - [x] `/find-jobs` — manual path, with the scoring rubric in SCORING.md
-- [ ] `/find-jobs` — Adzuna and Reed. Details ready in `find-jobs/SOURCES.md`.
-      **Setup phase 6 currently collects API keys for a path that does not exist yet.** Either
-      build this next, or make phase 6 say the keys are for later.
+- [x] `/find-jobs` — Adzuna and Reed. Adzuna verified against the live API; Reed is written
+      from documentation only and has never been run.
 - [x] `/review-jobs`
 - [x] `/status`
 - [ ] `/apply` — including the claim check, both output formats, and the `generated/` snapshot
