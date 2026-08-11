@@ -12,7 +12,13 @@ application.
 For emailing a person, or applying directly to a small organisation. Design freedom within the
 user's page target.
 
-Not yet written. Requirements when it is:
+- **`classic.html`** — colour accent, skill chips. Industry, commercial, tech, charity, design.
+  Verified through a real print to PDF.
+- **`plain.html`** — serif, no colour, conservative. Academia, law, medicine, finance, most
+  public sector, and the safer choice when the reader is unknown. Also supports running past two
+  pages, which academic and clinical CVs routinely do. Verified through a real print to PDF.
+
+Rules any template must follow:
 
 - A4 by default, page size configurable
 - Page breaks must be structural, not negotiated with the print engine. Split page content into
@@ -20,7 +26,8 @@ Not yet written. Requirements when it is:
   `break-inside: avoid` inside nested elements, which browsers apply inconsistently.
 - Backgrounds and colour must survive PDF export (`print-color-adjust: exact`)
 - Respect `preferences.page_target` from the profile
-- At least two visual options, since one house style will not suit every field
+- Respect `preferences.page_mode`: `split` chooses the break deliberately, `flow` lets content
+  run on and break where it lands without splitting an entry
 
 ## The DOCX path
 

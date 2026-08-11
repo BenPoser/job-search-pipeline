@@ -40,7 +40,7 @@ Run on live Adzuna listings, 11 Aug 2026: find, score, review, apply, print. Thr
 failures found and fixed in the process (page fetching, contract day rates annualised into
 salary, metadata contradicting the advert body). See docs/fetching-pages.md.
 
-Still unverified: the Reed source, and the `plain` CV template through a print.
+Still unverified: the Reed source, which has never been run for want of a key.
 
 ## Test with a real person before starting Phase 2
 
