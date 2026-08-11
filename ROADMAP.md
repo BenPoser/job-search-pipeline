@@ -12,10 +12,13 @@ application without the author sitting next to them.
 
 - [x] `/setup` — written, including the interview guide and the API key walkthrough.
       Untested against a real person.
-- [ ] `/find-jobs` — manual paste first, then Adzuna, then Reed
-- [ ] `/review-jobs`
+- [x] `/find-jobs` — manual path, with the scoring rubric in SCORING.md
+- [ ] `/find-jobs` — Adzuna and Reed. Details ready in `find-jobs/SOURCES.md`.
+      **Setup phase 6 currently collects API keys for a path that does not exist yet.** Either
+      build this next, or make phase 6 say the keys are for later.
+- [x] `/review-jobs`
+- [x] `/status`
 - [ ] `/apply` — including the claim check, both output formats, and the `generated/` snapshot
-- [ ] `/status`
 - [ ] At least two CV templates, PDF and DOCX paths
 
 Build order is that order. Nothing can be tested until `/setup` exists, and the manual paste path

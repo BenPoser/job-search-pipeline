@@ -1,137 +1,124 @@
 ---
 name: find-jobs
-description: Find job opportunities and score them against the user's profile, either by searching configured job boards or from a link or advert the user pastes in. Use when the user runs /find-jobs or wants to add a job they found themselves.
+description: Add a job to the pipeline and score it against the user's profile, from a link or pasted advert text. Use when the user runs /find-jobs, pastes a job advert, or mentions a role they have seen and want to consider.
 ---
 
 # /find-jobs
 
-Find roles and score them against the profile. Two equally supported ways in: paste one, or
-search the boards.
+Take a job, score it honestly against the profile, and write it to `my/jobs/`.
 
-**Status: designed, not yet built. This file is the specification.**
+Read [SCORING.md](SCORING.md) before scoring anything. The rubric is the whole point of this
+command; without it scores drift generous and stop being useful for triage.
 
 ---
 
 ## Invocation
 
-- `/find-jobs` with no argument: search the configured sources
-- `/find-jobs <url>`: take one job by link
-- `/find-jobs` followed by pasted advert text: take one job from text
+- `/find-jobs <url>` — one job from a link
+- `/find-jobs` then pasted advert text — one job from text
+- `/find-jobs` with nothing — ask what they have. Offer both, and mention that several at once
+  is fine.
 
-The manual path is not a fallback. It works with any job board in the world, including the ones
-this tool cannot search, and a user who never configures a key can use every part of the
-pipeline. See `docs/adr/0002` context and `CONTEXT.md` on Job Source.
+Several jobs in one go is normal and better than one at a time. Process them all, then report
+once.
 
----
+**Automatic searching is not built yet.** If `sources.adzuna` or `sources.reed` is true in the
+config, say so plainly rather than pretending to search:
 
-## Reads
-
-`my/search-config.yaml`, `my/profile.yaml`, `my/learnings.md`, and the filenames already in
-`my/jobs/` (for deduplication).
-
----
-
-## Manual path
-
-Fetch the URL, or take the pasted text. Extract title, organisation, location, salary, closing
-date, and the description. If the fetch is blocked, ask them to paste the text and do not make it
-a production.
-
-Assign `source: manual` and a stable `source_id` derived from the URL or from organisation plus
-title. Then score it exactly as a searched job is scored.
+> Searching the job boards automatically isn't wired up yet, even though your keys are saved.
+> Paste me a link or the text of an advert and everything after that point works normally.
 
 ---
 
-## Search path
+## Before you start
 
-Only run sources marked active in the config.
+Read `my/profile.yaml`, `my/search-config.yaml`, and `my/learnings.md` if it exists.
 
-### Adzuna
+**If there is no profile**, stop and send them to `/setup`. Scoring without a profile produces
+confident nonsense.
 
-```
-GET https://api.adzuna.com/v1/api/jobs/{country}/search/1
-  app_id, app_key, what={term}, salary_min, results_per_page
-```
+**If setup is incomplete**, say which parts are missing and that scores will be rough until it is
+finished, then carry on. A partial profile still beats nothing.
 
-The country code is a path segment. Do not pass `where` for a country-wide search, it returns
-nothing; use `where` only to narrow to a city.
-
-### Reed (United Kingdom only)
-
-```
-GET https://www.reed.co.uk/api/1.0/search
-Authorization: Basic base64(REED_API_KEY + ":")
-  keywords, locationName, minimumSalary, resultsToTake
-```
-
-### Adding another source
-
-Each source needs four things: an endpoint, an authentication method, a mapping from its fields
-to ours, and a paging rule. That is the whole abstraction. There is no plugin framework and
-there should not be one until there are more than three sources.
-
-### Missing credentials
-
-Skip that source, note it in the report, carry on. Never stop the run. If no source is active,
-that is not an error, say what the manual path is and stop.
-
-Print the active sources at the start:
-
-```
-Sources: Adzuna active. Reed skipped, no key set. Manual always available.
-```
+List `my/jobs/` to build the seen-already set.
 
 ---
 
-## Deduplicate
+## 1. Get the advert
 
-Skip anything whose `{source}-{source_id}` already exists in `my/jobs/`, silently.
+**From a URL:** fetch it. If the fetch is blocked, returns a login wall, or returns a page with
+no advert on it, say so in one line and ask them to paste the text. Do not make a production of
+it; job boards block automated fetching all the time and it is not a fault.
 
----
+**From pasted text:** use it as given.
 
-## Score
+Keep the URL either way. It is how they apply later.
 
-For each new job, read the advert against the profile and produce:
+## 2. Extract
 
-- **score** 1 to 10
-- **fit type**: `core`, `adjacent` or `pivot`, relative to *this person's* profile
-- **rationale**: two or three sentences naming specific matching strengths and the most
-  important genuine gap
+Fill the fields in `templates/job.yaml`. Take particular care over three:
 
-Be blunt. A low score with a clear reason saves an evening. Talking someone into a poor
-application costs them one and produces the silence that makes their next report look worse.
+**Salary.** Record what the advert says. If it does not state one, `salary_min` and `salary_max`
+are null and `salary_note` says so. Never infer a range from the job title, and never carry over
+an estimate from a job board, which are frequently wrong.
 
-Read `my/learnings.md` and let the observations there influence scoring. They are soft
-guidance written in plain language, not weights (`docs/adr/0004`). If an observation applies,
-say so in the rationale so the user can see the influence and disagree with it.
+**Requirements**, split into essential and desirable as the advert splits them. This drives the
+blocker check below and the targeting in `/apply`.
 
-Apply `exclude_terms`. Broad keyword searches pull in adjacent industries that share vocabulary,
-and the resulting noise makes users distrust the whole thing.
+**Application format.** Look for whether they want a cover letter, structured answers, or just a
+CV. If the advert lists the questions, capture them verbatim. Knowing this before anything is
+written saves the user from producing a cover letter nobody reads.
 
-Below `minimum_score`, discard without writing a file.
+If the advert is vague on any of these, leave the field null rather than filling it with a
+plausible guess. A null is honest and visible; a guess silently becomes fact.
 
----
+## 3. Deduplicate
 
-## Write
+Derive `source_id` from the URL where there is one, otherwise from organisation plus title,
+slugified. If `manual-{source_id}` already exists in `my/jobs/`, do not write a second file. Say
+which one it is and what its status is, in one line.
 
-One YAML file per job at `my/jobs/{source}-{source_id}.yaml`, with `status: new`. Store the
-description trimmed to roughly 400 words at a sentence boundary, enough for later scoring and CV
-generation without bloating the file.
+## 4. Score
 
----
+**Read [SCORING.md](SCORING.md).** Produce `score`, `fit_type`, `strengths`, `gaps`, `blocker`,
+and `rationale`.
 
-## Report
+Read `my/learnings.md` and let it influence the score where it genuinely applies. When it does,
+say so in the rationale, so the user can see the influence and disagree with it.
 
-```
-find-jobs complete
-  New:             7
-  Already seen:   31
-  Below threshold: 5
-```
+Jobs below `minimum_score` in the config still get written when the user supplied them by hand.
+They chose this job; silently discarding it is confusing. Say the score is below their threshold
+and let them decide.
 
-Then, if `manual_boards` is configured, remind them once:
+## 5. Write
 
-> You listed CharityJob and NHS Jobs as boards you use. I cannot search those. Worth a look, and
-> paste anything interesting in with /find-jobs.
+One file per job at `my/jobs/manual-{source_id}.yaml`, `status: new`,
+`search_cluster: manual`.
 
-Then a single next step: `/review-jobs`.
+## 6. Report
+
+For a single job, give the assessment directly rather than a summary table:
+
+> **Senior Analyst, Acme Trust**, Manchester, hybrid, £42-48k. Closes 29 August.
+>
+> **7 out of 10.** Ten years of directly relevant delivery work, and they want someone who has
+> run services rather than just worked in them, which is your whole record. The gap is the
+> professional qualification, which they list as essential rather than desirable, so it needs
+> addressing head on rather than hoping.
+>
+> They want structured answers, not a cover letter. Four questions, saved with the job.
+
+For several, list them compactly, ordered by score, then give one next step.
+
+Where a deadline is within about a week, say so plainly. It is the one fact that changes what
+they should do today.
+
+End with a single next step, normally `/review-jobs`, or `/apply` when there is one obvious
+strong job.
+
+## If the config lists boards you cannot search
+
+Mention it once per session, not per job:
+
+> You listed NHS Jobs and CharityJob as boards you use. Worth a look when you have a minute,
+> and paste anything interesting straight in here.

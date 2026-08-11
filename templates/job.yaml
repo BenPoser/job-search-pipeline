@@ -1,0 +1,87 @@
+# Job file template
+#
+# One of these per job, at my/jobs/{source}-{source_id}.yaml.
+# Written by /find-jobs, updated by /review-jobs, /apply and /log-outcome.
+# This file documents the schema and is never read at runtime.
+
+source: manual                   # manual | adzuna | reed
+source_id: "acme-senior-analyst" # unique within the source. For manual jobs, derive from the
+                                 # URL, or from organisation plus title if there is no URL.
+url: https://example.com/jobs/123
+date_found: 2026-08-11
+status: new                      # new | dismissed | shortlisted | applied | interviewing | closed
+
+# ---------------------------------------------------------------------------
+# The role
+# ---------------------------------------------------------------------------
+
+job_title: Senior Analyst
+organisation: Acme Trust
+sector: Charity                  # plain words, inferred from the advert
+location: Manchester
+remote: hybrid                   # remote | hybrid | onsite | unknown
+
+salary_min: 42000                # null if not stated. Never guess.
+salary_max: 48000
+salary_note: null                # anything the advert says that a range cannot carry,
+                                 # e.g. "depending on experience", "plus London weighting"
+
+date_posted: 2026-08-04          # null if not stated
+deadline: 2026-08-29             # null if not stated. Surfaced prominently in /review-jobs.
+
+description: >
+  The first several hundred words of the advert, trimmed at a sentence boundary.
+  Enough for scoring and for writing an application later, without storing the
+  entire page.
+
+# What the employer actually asks for. Extracted at find time because it is needed
+# by /review-jobs (to spot hard blockers) and by /apply (to target the documents).
+requirements:
+  essential:
+    - Five years in a similar role
+    - Recognised professional qualification
+  desirable:
+    - Experience of managing a small team
+
+# How they want to be applied to. Worth knowing before writing anything, because a
+# cover letter is wasted effort where the employer wants structured answers.
+application:
+  format: cover-letter           # cover-letter | structured-questions | cv-only | unknown
+  questions: []                  # the actual questions, where the advert lists them
+  notes: null                    # e.g. "applications via their own portal, no email"
+
+# ---------------------------------------------------------------------------
+# Assessment, written at find time
+# ---------------------------------------------------------------------------
+
+suitability:
+  score: 7                       # 1 to 10. See find-jobs/SCORING.md
+  fit_type: core                 # core | adjacent | pivot, relative to THIS person
+  strengths:
+    - Ten years of directly relevant delivery experience
+  gaps:
+    - No formal qualification, which they list as essential
+  blocker: false                 # true when a gap makes the application futile,
+                                 # e.g. a legally required registration they do not hold
+  rationale: >
+    Two or three sentences. Names the specific match and the most important gap.
+    Written for triage, not encouragement.
+
+search_cluster: core             # which cluster surfaced this, or 'manual'
+
+# ---------------------------------------------------------------------------
+# Filled in later
+# ---------------------------------------------------------------------------
+
+review:
+  decision: null                 # apply | dismiss | hold
+  reason: null                   # the user's own words. Feeds exclude_terms and observations.
+  date: null
+
+application_folder: null         # set by /apply
+
+outcome:                         # set by /log-outcome
+  result: null                   # interview | rejection | silence | offer
+  date: null
+  questions_asked: []            # where there was an interview
+  feedback: null                 # verbatim, if the employer gave any
