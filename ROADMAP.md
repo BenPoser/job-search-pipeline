@@ -17,8 +17,10 @@ application without the author sitting next to them.
       from documentation only and has never been run.
 - [x] `/review-jobs`
 - [x] `/status`
-- [ ] `/apply` — including the claim check, both output formats, and the `generated/` snapshot
-- [ ] At least two CV templates, PDF and DOCX paths
+- [x] `/apply` — claim check, both output formats, and the `generated/` snapshot
+- [x] Two CV templates (classic, plain), plus a stdlib DOCX builder. The DOCX package is
+      verified as valid and extracts cleanly; neither template has been through a real print
+      to PDF yet.
 
 Build order is that order. Nothing can be tested until `/setup` exists, and the manual paste path
 in `/find-jobs` unblocks everything downstream without needing an API key.
@@ -31,6 +33,10 @@ later from applications that were never recorded. It is nearly free to write now
 to recover later.
 
 ---
+
+## Phase 1 is code complete, and untested end to end
+
+Nothing above has been run start to finish by anyone. Do that before Phase 2.
 
 ## Test with a real person before starting Phase 2
 

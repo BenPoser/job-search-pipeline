@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CV</title>
+<style>
+/* ============================================================================
+   PLAIN — conservative, no colour, no chips, serif.
+   Good for: academia, law, medicine, finance, most public sector, and any
+   employer whose sector reads visual design as unseriousness.
+   Also the safer choice when you do not know who is reading.
+
+   Same page-break architecture as classic.html: the split between .cv-page-1
+   and .cv-page-2 is decided in the HTML, not negotiated with the print engine.
+   Do NOT put break-inside: avoid on .section.
+
+   This template also supports running longer than two pages, which academic
+   and clinical CVs routinely do. Add .cv-page-3 and so on, following the
+   same pattern, and set preferences.page_target accordingly.
+
+   Print with Chrome: File > Print > Save as PDF. Background graphics are not
+   needed here, since nothing relies on a background colour.
+   ========================================================================= */
+
+:root {
+  --ink:   #000;
+  --muted: #333;
+  --rule:  #999;
+  --base:  10pt;
+  --lh:    1.38;
+}
+
+@page { size: A4; margin: 1.4cm 1.9cm; }
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: var(--base);
+  line-height: var(--lh);
+  color: var(--ink);
+  margin: 0;
+}
+
+@media screen {
+  body { background: #f4f4f4; padding: 24px; }
+  .cv { background: #fff; max-width: 21cm; margin: 0 auto 24px;
+        padding: 1.4cm 1.9cm; box-shadow: 0 1px 6px rgba(0,0,0,.15); }
+}
+
+/* ---------- header ---------- */
+.name     { font-size: 17pt; font-weight: 700; margin: 0; letter-spacing: .01em; }
+.headline { font-size: 10.5pt; font-style: italic; color: var(--muted);
+            margin: 2px 0 5px; }
+.contact  { font-size: 9pt; color: var(--muted); }
+.contact a { color: inherit; text-decoration: none; }
+.contact span + span::before { content: "  |  "; color: var(--rule); }
+
+/* ---------- sections ---------- */
+.section       { margin-top: 13px; }
+.section-title { font-size: 10pt; font-weight: 700; text-transform: uppercase;
+                 letter-spacing: .09em;
+                 border-bottom: 1px solid var(--rule);
+                 padding-bottom: 2px; margin: 0 0 7px; }
+
+.summary { margin: 0; }
+
+/* ---------- experience ---------- */
+.exp-entry { margin-bottom: 10px; break-inside: avoid; page-break-inside: avoid; }
+.exp-head  { display: flex; justify-content: space-between; gap: 12px;
+             align-items: baseline; }
+.exp-role  { font-weight: 700; }
+.exp-org   { font-weight: 400; font-style: italic; }
+.exp-meta  { font-size: 9pt; color: var(--muted); white-space: nowrap; }
+
+.bullets    { margin: 3px 0 0; padding-left: 16px; }
+.bullets li { margin-bottom: 2px; break-inside: avoid; page-break-inside: avoid; }
+
+/* ---------- skills, as prose rather than chips ---------- */
+.skill-row   { display: flex; gap: 10px; margin-bottom: 3px;
+               break-inside: avoid; page-break-inside: avoid; }
+.skill-label { flex: 0 0 4.8cm; font-weight: 700; }
+.skill-tags  { flex: 1; }
+
+/* ---------- simple list sections ---------- */
+.simple-entry { margin-bottom: 5px; break-inside: avoid; page-break-inside: avoid; }
+.simple-title { font-weight: 700; }
+.simple-meta  { font-size: 9pt; color: var(--muted); }
+
+/* ---------- the page split ---------- */
+@media print {
+  .cv-page-1, .cv-page-2 { page-break-after: always; break-after: page; }
+  .cv-page-last { page-break-after: auto; break-after: auto; }
+  a { color: inherit; text-decoration: none; }
+}
+@media screen {
+  .cv-page-1, .cv-page-2 { border-bottom: 2px dashed #c00; padding-bottom: 10px; }
+  .cv-page-2, .cv-page-last { padding-top: 10px; }
+}
+</style>
+</head>
+<body>
+
+<div class="cv">
+
+  <!-- ==================== PAGE 1 ==================== -->
+  <div class="cv-page-1">
+
+    <header>
+      <h1 class="name">FULL NAME</h1>
+      <div class="headline">HEADLINE, TAILORED TO THIS ROLE</div>
+      <div class="contact">
+        <span>email@example.com</span>
+        <span>07700 900000</span>
+        <span>City</span>
+      </div>
+    </header>
+
+    <section class="section">
+      <h2 class="section-title">Summary</h2>
+      <p class="summary">
+        Three sentences. Who they are, the strongest specific match to this role,
+        and one forward-looking line.
+      </p>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Experience</h2>
+      <div class="exp-entry">
+        <div class="exp-head">
+          <div><span class="exp-role">Job Title</span>,
+               <span class="exp-org">Organisation</span></div>
+          <div class="exp-meta">Mar 2021 &ndash; Aug 2024</div>
+        </div>
+        <ul class="bullets">
+          <li>Achievement, phrased for this role.</li>
+        </ul>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ==================== FINAL PAGE ====================
+       Rename to .cv-page-2 and add another div if this runs longer. -->
+  <div class="cv-page-last">
+
+    <section class="section">
+      <h2 class="section-title">Education</h2>
+      <div class="simple-entry">
+        <span class="simple-title">Qualification</span>
+        <span class="simple-meta">Institution, 2014</span>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Skills</h2>
+      <div class="skill-row">
+        <div class="skill-label">Category</div>
+        <div class="skill-tags">Item, item, item</div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+</body>
+</html>

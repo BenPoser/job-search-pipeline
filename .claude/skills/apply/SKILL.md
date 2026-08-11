@@ -1,127 +1,138 @@
 ---
 name: apply
-description: Produce a tailored CV, cover letter and application answers for one specific job, including the non-skippable claim check. Use when the user runs /apply or is ready to apply for a shortlisted role.
+description: Produce the application pack for one job - a tailored CV as PDF and DOCX, a cover letter, and any application answers - including the claim check that cannot be skipped. Use when the user runs /apply or is ready to apply for a shortlisted role.
 ---
 
 # /apply
 
-Produce the application pack for one specific job: tailored CV in both formats, cover letter,
-and application answers where the employer asks for them.
+Build everything needed to apply for one job.
 
-**Status: designed, not yet built. This file is the specification.**
+Read [SELECTION.md](SELECTION.md) before choosing what goes on the CV, and
+[CLAIM-CHECK.md](CLAIM-CHECK.md) before finalising anything. [DOCUMENTS.md](DOCUMENTS.md) has
+the mechanics of producing each file.
 
 ---
 
 ## Invocation
 
-`/apply <job-file>`, or `/apply` and pick from the shortlist.
+`/apply <job-file>`, or `/apply` and offer the shortlist, strongest and soonest-closing first.
 
-## Reads
+## Read
 
-The job file, `my/profile.yaml`, `my/voice.md`, `my/learnings.md`, `docs/quality-rules.md`,
-`docs/tone.md`, and the CV template named in `preferences.cv_template`.
+The job file, `my/profile.yaml`, `my/voice.md`, `my/learnings.md`, `docs/quality-rules.md`, and
+the template named in `preferences.cv_template`.
+
+**No profile** → stop, send them to `/setup`.
+
+**Job already has an `application_folder`** → warn and ask before doing anything. Overwriting a
+CV they have hand-edited destroys work, and the edited version is also the feedback signal that
+`/log-outcome` depends on.
 
 ---
 
-## 1. Read the role
+## 1. Read the role properly
 
-From the advert and the suitability rationale, work out:
+Before writing anything, work out four things and say them out loud in a sentence or two, so the
+user can correct you before you spend effort on the wrong reading:
 
-- Which parts of the profile actually matter here. Use the taxonomy to select, so that two
-  applications to similar roles surface consistent material rather than independent
-  improvisations.
-- **Framing by fit type.** `core`: lead with the identity they already have. `adjacent`: lead
-  with the transferable spine and make the step look small. `pivot`: lead with what transfers,
-  and do not bury the change of field, because a reader will spot it in four seconds and a CV
-  that seems to be hiding it reads badly.
-- The genuine gaps named in the rationale. The cover letter addresses them; it does not pretend
-  they are absent.
-- Whether the employer wants a cover letter or structured answers. Check before writing a cover
-  letter nobody asked for. Structured competency questions are the norm in large parts of the
-  public and charity sectors.
+**What this employer actually wants.** Not the keyword list, the job. What appears first, and
+what is repeated, is what they care about.
+
+**The framing**, from `fit_type`:
+- `core` — lead with the identity they already have
+- `adjacent` — lead with the transferable spine and make the step look small
+- `pivot` — lead with what transfers, and do not bury the change of field. A reader spots it in
+  four seconds, and a CV that appears to be hiding it reads worse than one that owns it
+
+**The gaps**, from the job file's `suitability.gaps`. The cover letter addresses them. It does
+not pretend they are absent.
+
+**The application format**, from `application.format`. Check this before writing a cover letter
+nobody asked for. If the advert wants structured answers, the questions are already in the job
+file.
 
 ## 2. Ask for what is missing
 
-Where the role clearly wants something the profile does not cover, ask rather than working
-around it. The answer goes into the profile with provenance `interview`, so it is asked once.
-This is one of the main ways a profile grows.
+Where the role clearly wants something the profile does not cover, ask rather than writing
+around it:
 
-## 3. Write the documents
+> They want experience of managing a budget and I cannot see any in your profile. Have you? Even
+> informally, signing off spend or owning a cost line?
 
-Apply `my/voice.md` and `docs/quality-rules.md` together. **The quality rules win on conflict.**
+Whatever they answer goes into `my/profile.yaml` with provenance `interview` and today's date,
+so it is asked once and never again. This is one of the main ways a profile grows.
 
-**CV**, in two forms from the same content:
-- Styled PDF, within `preferences.page_target`
-- Plain DOCX: single column, standard headings, no tables or text boxes or images. This is the
-  one that survives automated parsing, and the one the user can edit in Word.
+Do not ask more than two or three of these. It is an application, not a second setup.
 
-**Cover letter**, in their voice. Anything specific about the organisation must come from the
-advert or from something the user has said. If there is nothing genuine, leave a visible
-placeholder rather than inventing an admiration they do not have.
+## 3. Select
 
-**Application answers**, where asked for, matching the employer's competency framework and the
-answers section of the voice profile.
+Read [SELECTION.md](SELECTION.md). Choose the achievements, order the sections, and decide the
+page split before writing any HTML.
 
-## 4. The claim check
+## 4. Write the documents
 
-**This step cannot be skipped.** It is the most valuable thing this tool does.
+Apply `my/voice.md` and `docs/quality-rules.md` together. **Quality rules win on conflict.**
 
-Trace every line back to the profile. Look specifically for strengthening in the rewriting:
-*contributed to* becoming *led*, *helped with* becoming *owned*, *was part of a team that*
-becoming *delivered*. This drift is easy to introduce and hard to catch on a reread.
+See [DOCUMENTS.md](DOCUMENTS.md) for how each file is produced. In summary:
 
-Where the draft is stronger than the evidence, stop and put it to the user:
+- **CV as HTML**, from the chosen template, then printed to PDF by the user
+- **CV as DOCX**, single column and parser-safe, built by `scripts/build_docx.py`
+- **Cover letter**, in their voice, where one is wanted
+- **Application answers**, where the employer asks questions instead
 
-> Your profile says you contributed to the supplier migration. This draft says you led it.
-> Which is right? If you led it, I will update your profile too.
+## 5. The claim check
 
-Then act on the answer, and write the confirmation into the profile so the same question is not
-asked on the next application.
+**Read [CLAIM-CHECK.md](CLAIM-CHECK.md) and run it. This step cannot be skipped**, shortened, or
+deferred to the end of the conversation where it will be ignored.
 
-Also produce a **weak evidence list**: claims that survived but rest on thin support, a single
-sentence with no metric or corroboration. Store it in the application folder. `/prep-interview`
-opens with it, because those are the lines most likely to be probed.
+It produces two things: questions for the user where the draft has outrun the evidence, and a
+weak-claims list saved with the application for `/prep-interview` to open from.
 
-Why this is non-negotiable: the worst thing this tool can do to someone is put a confident claim
-on their CV that collapses when an interviewer asks about it. The check catches the
-overstatement, keeps the user as the author of their own claims, and improves the profile
-whenever the stronger version turns out to be true.
-
-## 5. The stranger test
+## 6. The stranger test
 
 Reread the whole pack as someone who has never met this person and knows nothing about their
-employers or their industry's internal language. Apply `docs/quality-rules.md` section 2. Cut
-internal names, unexplained acronyms, and detail that is specific without being informative.
+employers or their field's internal language. Apply section 2 of `docs/quality-rules.md`.
 
-## 6. Write out, and record
+The three that catch people every time: internal project names, employer-specific acronyms, and
+numbers that are precise without being meaningful.
+
+## 7. Write it out
 
 ```
 my/applications/{slug}/
-  cv.html
-  cv.pdf
-  cv.docx
-  cover-letter.md
-  answers.md            (if applicable)
-  generated/            snapshot of everything as generated
-  weak-claims.md
-  application.yaml      job reference, date, fit type, what was selected and why
+  cv.html            styled, for printing to PDF
+  cv.docx            single column, parser-safe
+  cover-letter.md    or answers.md
+  weak-claims.md     what to expect to be asked about
+  application.yaml   job reference, date, what was selected and why
+  generated/         a copy of everything above, exactly as generated
 ```
 
-**`generated/` must be written from the first release**, even though nothing reads it yet.
-The difference between what was generated and what the user actually sends is the primary
-feedback signal (`docs/adr/0004`): it exists for every application, arrives within minutes, and
-is not confounded by whether the employer had already decided. It cannot be reconstructed later
-from an application that was never recorded.
+The slug is kebab-case from organisation and job title, five words at most.
 
-If the folder already exists, warn and ask before overwriting. Overwriting a hand-edited CV is
-destructive.
+**`generated/` is not optional.** Nothing reads it yet, but the difference between what was
+generated and what the user actually sends is the primary feedback signal (`docs/adr/0004`), and
+it cannot be reconstructed later from an application that was never recorded. It costs a copy.
 
-Update the job to `status: shortlisted` and link the application folder.
+Then update the job file: `status: shortlisted`, and set `application_folder`.
 
-## 7. Report
+## 8. Report
 
-State what was produced and **which file to send where**: the DOCX for agencies, large employers
-and public sector portals whose systems parse the file; the PDF for emailing a person or applying
-to a small organisation.
+Say what was produced, and **which file to send where**, because most people do not know this
+and it materially affects their chances:
 
-Then one next step: review it, edit it, and run `/log-outcome` when something happens.
+> **DOCX** for agencies, large employers, and any application through a portal. Their systems
+> read the file automatically and anything designed gets mangled.
+>
+> **PDF** for emailing a person directly, or a small organisation.
+
+Then the print step, which is manual:
+
+> Open `cv.html` in Chrome, File > Print > Save as PDF. Tick **Background graphics** or the
+> colour disappears. Check the page break falls where you want it.
+
+Then one next step: review it, edit anything that does not sound like them, and run
+`/log-outcome` when something happens.
+
+Do not claim the pack is finished or ready to send. It is a strong draft, and the user is the
+author.
